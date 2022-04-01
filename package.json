@@ -11,7 +11,9 @@
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
+    "ccxt": "^1.77.63",
     "electron": "^18.0.1",
+    "node-fetch": "^2.6.7",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "5.0.0",
@@ -23,13 +25,21 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron-dev":"electron ."
+    "electron-dev": "electron ."
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
     ]
+  },
+  "browser": {
+    "http": true,
+    "https": true,
+    "net": false,
+    "path": false,
+    "stream": false,
+    "tls": false
   },
   "browserslist": {
     "production": [
