@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Header, BtnLink, Navigation } from "./Layout.styles";
+import { SelectExchange } from "./SelectEcxhange";
 const Layout = ({ children }: any) => {
   return (
     <div>
@@ -15,6 +16,9 @@ const Layout = ({ children }: any) => {
             <Link to={"/balances"}>Balances</Link>
           </BtnLink>
         </Navigation>
+        <div>
+          <SelectExchange />
+        </div>
       </Header>
       {children}
     </div>

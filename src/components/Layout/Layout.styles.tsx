@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 export const Header = styled.div`
   width: 100%;
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
   background-color: #1f1f1f;
 `;
 export const BtnLink = styled.span`
