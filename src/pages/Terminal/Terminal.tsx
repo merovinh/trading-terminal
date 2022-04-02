@@ -1,5 +1,4 @@
-const Terminal = () =>{
-    return(<>
-    </>)
-}
+const Terminal = () => {
+  return <div>Terminal</div>;
+};
 export default Terminal;
