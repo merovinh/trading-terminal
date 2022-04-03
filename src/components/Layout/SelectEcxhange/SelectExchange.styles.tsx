@@ -36,7 +36,7 @@ export const StyledButton = styled("button")(
     min-width: 200px;
     background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
     border: 1px solid ${theme.palette.mode === "dark" ? grey[800] : grey[300]};
-    border-radius: 0.75em;
+    border-radius: 0.75em 0 0 0.75em;
     
     padding: 7px;
     text-align: left;

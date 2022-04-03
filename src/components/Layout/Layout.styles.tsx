@@ -5,7 +5,9 @@ export const Header = styled.div`
   padding: 10px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: #1f1f1f;
+  color: #fff;
 `;
 export const BtnLink = styled.span`
   a {
@@ -30,4 +32,20 @@ export const Navigation = styled.nav`
   padding: 10px;
   border-radius: 5px;
   justify-content: space-between;
+`;
+
+export const HeaderOuterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+export const AddExchangeBtn = styled.span`
+  background-color: #fff;
+  a {
+    width: 100%;
+    height: 100%;
+  }
+`;
+
+export const SelectContainer = styled.div`
+  display: flex;
 `;

@@ -7,6 +7,7 @@ import * as ccxt from "ccxt";
 import { Layout } from "./components/Layout";
 import { Global } from "@emotion/react";
 import { GlobalStyles } from "./Global.styles";
+import { AddExchange } from "./pages/AddExchange";
 
 function App() {
   const ccxt = (window as any).ccxt;
@@ -43,6 +44,14 @@ function App() {
             element={
               <Layout>
                 <Balances />
+              </Layout>
+            }
+          ></Route>
+          <Route
+            path="/addExchange"
+            element={
+              <Layout>
+                <AddExchange />
               </Layout>
             }
           ></Route>
