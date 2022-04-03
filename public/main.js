@@ -1,4 +1,6 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow } = require('electron');
+
+
 
 function createWindow() {
     // Create the browser window.
@@ -6,7 +8,8 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            enableRemoteModule: true
         }
     })
 
@@ -14,7 +17,7 @@ function createWindow() {
     win.loadURL('http://localhost:3000');
 
     // Open the DevTools.
-    win.webContents.openDevTools()
+    win.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
@@ -39,6 +42,52 @@ app.on('activate', () => {
         createWindow()
     }
 })
+
+const fs = require('fs');
+try { fs.writeFileSync('myfile.txt', 'the text to write in the file', 'utf-8'); }
+catch (e) { alert('Failed to save the file !'); }
+
+// const http = require('http');
+
+// const server = http.listen(3000, 'localhost', () => {
+//     console.log("ConneCted");
+// })
+
+const net = require("net");
+
+// Create a simple server
+var server = net.createServer(function (conn) {
+    console.log("Server: Client connected");
+
+    // If connection is closed
+    conn.on("end", function () {
+        console.log('Server: Client disconnected');
+        // Close the server
+        server.close();
+        // End the process
+        process.exit(0);
+    });
+
+    // Handle data from client
+    conn.on("data", function (data) {
+        data = JSON.parse(data);
+        console.log("Response from client: %s", data.response);
+    });
+
+    // Let's response with a hello message
+    conn.write(
+        JSON.stringify(
+            { response: "Hey there client!" }
+        )
+    );
+});
+
+// Listen for connections
+server.listen(3000, "localhost", function () {
+    console.log("Server: Listening");
+});
+
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
