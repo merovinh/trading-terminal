@@ -28,7 +28,7 @@ const Layout = ({ children }: any) => {
           <SelectContainer>
             <SelectExchange />
             <AddExchangeBtn>
-              <Link to={"/addExchange"}>add</Link>
+              <Link to={"/addExchange"}>Add</Link>
             </AddExchangeBtn>
           </SelectContainer>
         </HeaderOuterContainer>

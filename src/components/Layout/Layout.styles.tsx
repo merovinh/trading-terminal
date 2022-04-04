@@ -10,7 +10,13 @@ export const Header = styled.div`
   color: #fff;
 `;
 export const BtnLink = styled.span`
+  height: 100%;
   a {
+    height: 100%;
+    width: 100%;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
     color: #fff;
     transition: color 250ms ease;
     transition: text-shadow 250ms ease;
@@ -29,7 +35,6 @@ export const Navigation = styled.nav`
   display: flex;
   gap: 40px;
   background-color: #303030;
-  padding: 10px;
   border-radius: 5px;
   justify-content: space-between;
 `;
@@ -40,9 +45,22 @@ export const HeaderOuterContainer = styled.div`
 `;
 export const AddExchangeBtn = styled.span`
   background-color: #fff;
+  display: flex;
+  align-items: center;
+  border-radius: 0 0.75em 0.75em 0;
+  border: 1px solid #cdd2d7;
   a {
+    border-radius: 0 0.75em 0.75em 0;
     width: 100%;
     height: 100%;
+    padding: 0 13px;
+    display: flex;
+    align-items: center;
+    color: #1f1f1f;
+    :hover {
+      background: #e7ebf0;
+      border-color: #b2bac2;
+    }
   }
 `;
 
