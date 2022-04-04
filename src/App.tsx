@@ -10,13 +10,6 @@ import { GlobalStyles } from "./Global.styles";
 import { AddExchange } from "./pages/AddExchange";
 
 function App() {
-  const ccxt = (window as any).ccxt;
-
-  useEffect(() => {
-    console.log(ccxt.exchanges); // print all available exchanges
-    let kucoin: any = new ccxt.kucoin();
-  });
-
   return (
     <div className="App">
       <Global styles={GlobalStyles}></Global>
