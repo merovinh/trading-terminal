@@ -10,7 +10,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
-const CoinsList = ({ coins }: any) => {
+const CoinsList = ({ coins, selectCoin }: any) => {
   const [filteredCoins, setFilteredCoins] = useState(coins);
 
   const renderCoins = (arr: []): ReactNode =>
@@ -19,7 +19,7 @@ const CoinsList = ({ coins }: any) => {
     ));
 
   const handleClick = (e: any) => {
-    console.log(e.target.innerText);
+    selectCoin(e.target.innerText);
   };
 
   const handleFilter = (e: any) => {

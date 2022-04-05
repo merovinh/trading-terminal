@@ -46,11 +46,12 @@ export const StyledCoinsItem = styled.li`
   font-size: 14px;
   display: flex;
   align-items: center;
-  padding-left: 25px;
-  padding-bottom: 2px;
+  padding: 1px 0 1px 25px;
   overflow-wrap: anywhere;
   cursor: pointer;
   :hover {
-    color: red;
+    color: #000;
+    background-color: #fff;
+    font-weight: 500;
   }
 `;
