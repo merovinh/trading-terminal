@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CoinsList } from "../../components/CoinsList";
+import { NumInput } from "../../components/NumInput";
 
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
@@ -11,14 +12,21 @@ const Terminal = () => {
   });
 
   const [coins, setCoins]: [any, any] = useState([]);
+  const [selectedCoin, setSelectedCoin]: any = useState(null);
+
+  const handleClick = (value: string) => {
+    console.log(value);
+    setSelectedCoin(value);
+  };
 
   useEffect(() => {
     kucoin.fetchMarkets().then((res: any) => setCoins(res));
   }, []);
 
   return (
-    <div>
-      <CoinsList coins={coins} />
+    <div style={{ display: "flex" }}>
+      <CoinsList coins={coins} selectCoin={handleClick} />
+      <NumInput placeholder={"Limit"} coin={selectedCoin} />
     </div>
   );
 };
