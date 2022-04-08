@@ -12,7 +12,7 @@ export const StyledInput = styled.input`
   background-color: #242424;
   width: 100%;
   height: 100%;
-  padding: 10px 100px 10px 10px;
+  padding: 10px 90px 10px 10px;
   font-size: 18px;
   color: #fff;
   border: 1px solid #595959;
@@ -38,18 +38,22 @@ export const OperationsContainer = styled.div`
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  width: 100px;
-  font-size: 12px;
+  width: 80px;
+  font-size: 10px;
   overflow-wrap: anywhere;
   color: #fff;
   justify-content: flex-end;
   gap: 3px;
   align-items: center;
   padding-right: 3px;
+  label {
+    cursor: pointer;
+  }
   div {
     display: flex;
     flex-direction: column;
     gap: 3px;
+    cursor: pointer;
 
     button {
       width: 32px;
