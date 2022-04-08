@@ -4,11 +4,12 @@ import { FormAction } from "../../components/Forms/FormAction/";
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
   let kucoin: any = new ccxt.kucoin({
-    apiKey: "624ef45429c69200011e2ad4",
-    secret: "7098e26a-d6e4-4090-806d-b331e2531bba",
-    password: "testing",
-    proxy: "https://cors-proxy.crawler.link/",
+    apiKey: process.env.REACT_APP_apiKey,
+    secret: process.env.REACT_APP_secret,
+    password: process.env.REACT_APP_password,
+    proxy: process.env.REACT_APP_proxy,
   });
+  console.log(process.env.REACT_APP_apiKey);
 
   const [coins, setCoins]: [any, any] = useState([]);
   const [selectedCoin, setSelectedCoin]: any = useState(null);
