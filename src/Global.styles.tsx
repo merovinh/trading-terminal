@@ -17,7 +17,12 @@ export const GlobalStyles = css`
 
   body {
     margin: 0;
-    font-family: "Poppins", sans-serif;
+    font-family: "Lexend", "Poppins", sans-serif;
+    font-weight: 300;
+  }
+  button {
+    font-weight: 300;
+    font-family: "Lexend", "Poppins", sans-serif;
   }
 
   h1,

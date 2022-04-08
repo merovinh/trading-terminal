@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { CoinsList } from "../../components/CoinsList";
-import { NumInput } from "../../components/NumInput";
-
+import { FormAction } from "../../components/Forms/FormAction/";
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
   let kucoin: any = new ccxt.kucoin({
-    apiKey: "624acd53c8c02f000164b10f",
-    secret: "60a3ee00-a7c4-4377-859d-334d37f7e8ab",
+    apiKey: "624ef45429c69200011e2ad4",
+    secret: "7098e26a-d6e4-4090-806d-b331e2531bba",
     password: "testing",
     proxy: "https://cors-proxy.crawler.link/",
   });
@@ -14,19 +13,78 @@ const Terminal = () => {
   const [coins, setCoins]: [any, any] = useState([]);
   const [selectedCoin, setSelectedCoin]: any = useState(null);
 
+  const [amountValue, setAmountValue]: [any, any] = useState("");
+  const [limitValue, setLimitValue]: [any, any] = useState("");
+
+  const [balance, setBalance]: [any, any] = useState(null);
+  const [available, setAvailable]: [any, any] = useState(0);
+
+  const handleAmountChange = (value: string | number) => {
+    setAmountValue(+value);
+  };
+  const handleLimitChange = (value: string | number) => {
+    setLimitValue(+value);
+  };
+
   const handleClick = (value: string) => {
-    console.log(value);
-    setSelectedCoin(value);
+    const splittedValue = value.split("/");
+    setSelectedCoin({ limit: splittedValue[1], amount: splittedValue[0] });
   };
 
   useEffect(() => {
+    kucoin.setSandboxMode(true);
+    console.log(kucoin.fetchBalance().then((res: any) => setBalance(res)));
     kucoin.fetchMarkets().then((res: any) => setCoins(res));
   }, []);
 
+  const [action, setAction] = useState("buy");
+  const toggleAction = (e: any) => {
+    e.preventDefault();
+    action === "buy" ? setAction("sell") : setAction("buy");
+  };
+
+  useEffect(() => {
+    const handleBalance = () => {
+      let result: any;
+      if (balance && selectedCoin) {
+        const currency =
+          action === "buy" ? selectedCoin.limit : selectedCoin.amount;
+        if (balance[currency]) result = balance[currency].free;
+      } else result = 0;
+
+      setAvailable(result ? result : 0);
+    };
+    handleBalance();
+  }, [action, balance, selectedCoin]);
+
+  const handleAction = (e: any) => {
+    e.preventDefault();
+    console.log(selectedCoin);
+    kucoin.setSandboxMode(true);
+    const actionCoin: string = `${selectedCoin.amount}/${selectedCoin.limit}`;
+    console.log();
+    kucoin
+      .createOrder(actionCoin, "limit", action, amountValue, limitValue)
+      .then((data: any) => {
+        console.log(data);
+        kucoin.fetchOpenOrders().then((res: any) => console.log(res));
+      }); // fullified => fetchOrders
+  };
+
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", gap: "40px" }}>
       <CoinsList coins={coins} selectCoin={handleClick} />
-      <NumInput placeholder={"Limit"} coin={selectedCoin} />
+      <FormAction
+        selectedCoin={selectedCoin}
+        amountValue={amountValue}
+        handleAmountChange={handleAmountChange}
+        limitValue={limitValue}
+        handleLimitChange={handleLimitChange}
+        handleAction={handleAction}
+        toggleAction={toggleAction}
+        action={action}
+        available={available}
+      />
     </div>
   );
 };
