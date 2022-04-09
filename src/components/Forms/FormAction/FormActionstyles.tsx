@@ -77,3 +77,23 @@ export const PricesContainer = styled.div`
     }
   }
 `;
+
+export const ProcentsContainer = styled.div`
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 10px;
+
+  button {
+    padding: 2px 5px;
+    font-weight: 500;
+    background-color: #272727;
+    color: #868686;
+    border: 1px solid #868686;
+    border-radius: 4px;
+    cursor: pointer;
+    :hover {
+      background-color: #404040;
+    }
+  }
+`;

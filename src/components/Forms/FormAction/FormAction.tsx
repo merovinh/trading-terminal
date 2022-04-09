@@ -1,9 +1,11 @@
+import numberFormater from "../../../logic/numberFormater";
 import { NumInput } from "../../NumInput";
 import {
   ActionButton,
   PricesContainer,
   StyledForm,
   SwitchButton,
+  ProcentsContainer,
 } from "./FormActionstyles";
 
 const FormAction = ({
@@ -16,6 +18,7 @@ const FormAction = ({
   toggleAction,
   action,
   available,
+  accuracy,
 }: any) => {
   const defineCoin = () => {
     if (selectedCoin) {
@@ -23,7 +26,18 @@ const FormAction = ({
     } else return null;
   };
   const defineVolume = () =>
-    amountValue && limitValue ? +(amountValue * limitValue).toFixed(11) : 0;
+    amountValue && limitValue ? +(amountValue * limitValue) : 0;
+
+  const handleProcentClick = (e: any) => {
+    e.preventDefault();
+    const procent = +parseInt(e.target.innerText) * 0.01;
+    let amountResult: any;
+    if (limitValue) {
+      amountResult = (procent * available) / limitValue;
+    } else amountResult = 0;
+    console.log(limitValue);
+    handleAmountChange(amountResult.toFixed(accuracy.precision.amount));
+  };
   return (
     <StyledForm>
       <label className="switchContainer">
@@ -39,28 +53,36 @@ const FormAction = ({
         <NumInput
           placeholder={"Limit"}
           coin={selectedCoin}
-          hookValue={amountValue}
-          handleValue={handleAmountChange}
+          hookValue={limitValue}
+          handleValue={handleLimitChange}
+          accuracy={accuracy.precision.price}
         />
         <NumInput
           placeholder={"Amount"}
           coin={selectedCoin}
-          hookValue={limitValue}
-          handleValue={handleLimitChange}
+          hookValue={amountValue}
+          handleValue={handleAmountChange}
+          accuracy={accuracy.precision.amount}
         />
+        <ProcentsContainer>
+          <button onClick={handleProcentClick}>25%</button>
+          <button onClick={handleProcentClick}>50%</button>
+          <button onClick={handleProcentClick}>75%</button>
+          <button onClick={handleProcentClick}>100%</button>
+        </ProcentsContainer>
       </div>
       <PricesContainer>
         <div>
           <p>Available:</p>
           <p>
-            {`${available} `}
+            {`${numberFormater(available)} `}
             {defineCoin()}
           </p>
         </div>
         <div>
           <p>Volume:</p>
           <p>
-            {defineVolume() + " "}
+            {numberFormater(defineVolume()) + " "}
             {selectedCoin ? selectedCoin.limit : null}
           </p>
         </div>
