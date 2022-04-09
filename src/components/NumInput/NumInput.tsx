@@ -13,11 +13,13 @@ const NumInput = ({
   coin,
   handleValue,
   hookValue,
+  accuracy,
 }: {
   placeholder: string;
   coin: coinType;
   handleValue: any;
   hookValue: any;
+  accuracy: any;
 }) => {
   // const [value, setValue]: valueType = useState("");
 
@@ -25,9 +27,9 @@ const NumInput = ({
     e.preventDefault();
     let newValue: number;
     if (e.target.innerText === "+") {
-      newValue = hookValue !== "" ? +(hookValue + 0.1).toFixed(11) : 0.1;
+      newValue = hookValue !== "" ? +(hookValue + 0.1).toFixed(accuracy) : 0.1;
     } else {
-      newValue = +(hookValue - 0.1).toFixed(11);
+      newValue = +(hookValue - 0.1).toFixed(accuracy);
     }
     handleValue(newValue);
   };
@@ -35,11 +37,12 @@ const NumInput = ({
   return (
     <InputContainer>
       <StyledInput
+        lang="en"
         id={`${placeholder}`}
         type={"number"}
         placeholder={placeholder}
         value={hookValue}
-        onChange={(e) => handleValue((+e.target.value).toFixed(11))}
+        onChange={(e) => handleValue((+e.target.value).toFixed(accuracy))}
       />
       <OperationsContainer>
         <label htmlFor={`${placeholder}`}>

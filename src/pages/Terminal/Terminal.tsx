@@ -9,10 +9,13 @@ const Terminal = () => {
     password: process.env.REACT_APP_password,
     proxy: process.env.REACT_APP_proxy,
   });
-  console.log(process.env.REACT_APP_apiKey);
 
   const [coins, setCoins]: [any, any] = useState([]);
   const [selectedCoin, setSelectedCoin]: any = useState(null);
+
+  const [accuracy, setAccuracy] = useState({
+    precision: { price: 11, amount: 11 },
+  });
 
   const [amountValue, setAmountValue]: [any, any] = useState("");
   const [limitValue, setLimitValue]: [any, any] = useState("");
@@ -30,11 +33,21 @@ const Terminal = () => {
   const handleClick = (value: string) => {
     const splittedValue = value.split("/");
     setSelectedCoin({ limit: splittedValue[1], amount: splittedValue[0] });
+    let accuracy: any;
+    for (let key of coins) {
+      if (key.symbol === value) accuracy = key;
+    }
+    console.log(accuracy);
+    setAccuracy(accuracy);
   };
-
+  // console.log(coins);
   useEffect(() => {
     kucoin.setSandboxMode(true);
-    console.log(kucoin.fetchBalance().then((res: any) => setBalance(res)));
+    console.log(
+      kucoin.fetchBalance().then((res: any) => {
+        setBalance(res);
+      })
+    );
     kucoin.fetchMarkets().then((res: any) => setCoins(res));
   }, []);
 
@@ -85,6 +98,7 @@ const Terminal = () => {
         toggleAction={toggleAction}
         action={action}
         available={available}
+        accuracy={accuracy}
       />
     </div>
   );
