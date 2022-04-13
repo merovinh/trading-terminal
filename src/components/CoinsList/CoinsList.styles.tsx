@@ -19,7 +19,7 @@ export const StyledCoinsList = styled.ul`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 60vh;
+  height: calc(100vh - 56px - 57px);
   overflow-y: scroll;
   background-color: #242424;
   color: #f1f1f1;
