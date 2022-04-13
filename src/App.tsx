@@ -8,11 +8,13 @@ import { Layout } from "./components/Layout";
 import { Global } from "@emotion/react";
 import { GlobalStyles } from "./Global.styles";
 import { AddExchange } from "./pages/AddExchange";
+import { Notification } from "./components/Notification";
 
 function App() {
   return (
     <div className="App">
       <Global styles={GlobalStyles}></Global>
+      <Notification />
       <BrowserRouter>
         <Routes>
           <Route path="*" element={<Navigate replace to="/Terminal" />}></Route>
