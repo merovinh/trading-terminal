@@ -14,12 +14,14 @@ const NumInput = ({
   handleValue,
   hookValue,
   accuracy,
+  disabled = false,
 }: {
   placeholder: string;
   coin: coinType;
   handleValue: any;
   hookValue: any;
   accuracy: any;
+  disabled?: boolean;
 }) => {
   // const [value, setValue]: valueType = useState("");
 
@@ -37,11 +39,14 @@ const NumInput = ({
   return (
     <InputContainer>
       <StyledInput
+        disabled={disabled}
+        className={disabled ? "disabled" : ""}
+        name={placeholder.toLowerCase()}
         lang="en"
         id={`${placeholder}`}
         type={"number"}
         placeholder={placeholder}
-        value={hookValue}
+        value={disabled ? "" : hookValue}
         onChange={(e) => handleValue((+e.target.value).toFixed(accuracy))}
       />
       <OperationsContainer>
@@ -49,8 +54,12 @@ const NumInput = ({
           <p>{coin ? coin[placeholder.toLowerCase()] : null}</p>
         </label>
         <div>
-          <button onClick={handleClick}>+</button>
-          <button onClick={handleClick}>-</button>
+          <button className={disabled ? "disabled" : ""} onClick={handleClick}>
+            +
+          </button>
+          <button className={disabled ? "disabled" : ""} onClick={handleClick}>
+            -
+          </button>
         </div>
       </OperationsContainer>
     </InputContainer>

@@ -8,6 +8,10 @@ export const StyledInput = styled.input`
     appearance: none;
     margin: 0;
   }
+  &.disabled {
+    background-color: #585858;
+    border: 1px solid grey;
+  }
 
   background-color: #242424;
   width: 100%;
@@ -73,6 +77,9 @@ export const OperationsContainer = styled.div`
       }
       :active {
         background-color: #302e2e;
+      }
+      &.disabled {
+        display: none;
       }
     }
   }
