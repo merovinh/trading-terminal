@@ -4,7 +4,7 @@ export const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 50px;
+  gap: 35px;
   .inputsContainer {
     display: flex;
     flex-direction: column;
@@ -24,9 +24,10 @@ export const StyledForm = styled.form`
 
 export const SwitchButton = styled.button`
   border: 3px solid #595959;
-  width: 100px;
-  padding: 5px 0;
-  border-radius: 40px;
+  font-weight: 600;
+  width: 70px;
+  padding: 5px 10px;
+  border-radius: 10px;
   font-size: 23px;
   background-color: #272727;
   color: #868686;
@@ -96,4 +97,32 @@ export const ProcentsContainer = styled.div`
       background-color: #404040;
     }
   }
+`;
+
+export const ModesContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  p {
+    color: #fff;
+    cursor: pointer;
+    :hover,
+    &.chosed {
+      color: #56c74d;
+    }
+  }
+`;
+
+export const Errors = styled.span`
+  position: absolute;
+  color: #acacac;
+  font-size: 12px;
+  font-weight: 400;
+  bottom: 0;
+  right: 0;
+  display: block;
+  text-decoration: underline;
+  width: 100%;
+  transform: translateY(100%);
 `;

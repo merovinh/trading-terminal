@@ -1,12 +1,17 @@
+import { Formik, isString } from "formik";
 import numberFormater from "../../../logic/numberFormater";
 import { NumInput } from "../../NumInput";
+import { validationSchemaLimit, validationSchemaMarket } from "./validate";
 import {
   ActionButton,
   PricesContainer,
   StyledForm,
   SwitchButton,
   ProcentsContainer,
+  ModesContainer,
+  Errors,
 } from "./FormActionstyles";
+import { useEffect, useState } from "react";
 
 const FormAction = ({
   selectedCoin,
@@ -19,6 +24,8 @@ const FormAction = ({
   action,
   available,
   accuracy,
+  mode,
+  handleModeChange,
 }: any) => {
   const defineCoin = () => {
     if (selectedCoin) {
@@ -30,16 +37,31 @@ const FormAction = ({
 
   const handleProcentClick = (e: any) => {
     e.preventDefault();
-    const procent = +parseInt(e.target.innerText) * 0.01;
+
     let amountResult: any;
-    if (limitValue) {
-      amountResult = (procent * available) / limitValue;
-    } else amountResult = 0;
+    const procent = +parseInt(e.target.innerText) * 0.01;
+    if (mode === "limit") {
+      if (limitValue) {
+        amountResult = (procent * available) / limitValue;
+      } else amountResult = 0;
+    } else if (mode === "market") amountResult = available * procent;
     console.log(limitValue);
+
     handleAmountChange(amountResult.toFixed(accuracy.precision.amount));
   };
+
+  const changeMode = (e: any) => {
+    const elements = [...e.target.parentElement.children];
+    elements.forEach((el) =>
+      el.classList.contains("chosed") ? el.classList.remove("chosed") : null
+    );
+    e.target.classList.add("chosed");
+    handleModeChange(e.target.innerText.toLowerCase());
+  };
+  console.log(mode);
+
   return (
-    <StyledForm>
+    <StyledForm onSubmit={handleAction}>
       <label className="switchContainer">
         <SwitchButton onClick={toggleAction}>
           {action[0].toUpperCase() + action.substr(1)}
@@ -49,8 +71,15 @@ const FormAction = ({
           <br /> to switch mode
         </p>
       </label>
+      <ModesContainer>
+        <p onClick={changeMode} className={"chosed"}>
+          Limit
+        </p>
+        <p onClick={changeMode}>Market</p>
+      </ModesContainer>
       <div className="inputsContainer">
         <NumInput
+          disabled={mode === "market" ? true : false}
           placeholder={"Limit"}
           coin={selectedCoin}
           hookValue={limitValue}
@@ -79,7 +108,7 @@ const FormAction = ({
             {defineCoin()}
           </p>
         </div>
-        <div>
+        <div style={mode === "market" ? { display: "none" } : {}}>
           <p>Volume:</p>
           <p>
             {numberFormater(defineVolume()) + " "}
@@ -87,7 +116,7 @@ const FormAction = ({
           </p>
         </div>
       </PricesContainer>
-      <ActionButton className={action} onClick={handleAction}>
+      <ActionButton className={action} type="submit">
         {`${action[0].toUpperCase()}${action.substr(1)}`}
         {selectedCoin ? " " + selectedCoin.amount : null}
       </ActionButton>
