@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const ListContainer = styled.div`
-  width: 200px;
+  min-width: 200px;
 `;
 export const InputContainer = styled.div`
   background-color: #242424;

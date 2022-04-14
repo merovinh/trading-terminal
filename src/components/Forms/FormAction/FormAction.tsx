@@ -84,14 +84,14 @@ const FormAction = ({
           coin={selectedCoin}
           hookValue={limitValue}
           handleValue={handleLimitChange}
-          accuracy={accuracy.precision.price}
+          accuracy={accuracy?.precision ? accuracy.precision.price : 8}
         />
         <NumInput
           placeholder={"Amount"}
           coin={selectedCoin}
           hookValue={amountValue}
           handleValue={handleAmountChange}
-          accuracy={accuracy.precision.amount}
+          accuracy={accuracy?.precision ? accuracy.precision.amount : 8}
         />
         <ProcentsContainer>
           <button onClick={handleProcentClick}>25%</button>
