@@ -3,15 +3,7 @@ import styled from "@emotion/styled";
 export const OrdersContainer = styled.div`
   width: 100%;
   background-color: #242424;
-  div {
-    padding: 10px;
-    background-color: #202020;
-    p {
-      font-weight: 800;
-      letter-spacing: 1px;
-      font-size: 13px;
-    }
-  }
+
   ul {
     height: calc(100vh - 56px - 57px);
     overflow-y: scroll;
@@ -36,12 +28,15 @@ export const OrdersContainer = styled.div`
   div,
   li {
     /* background-color: black; */
-    color: #fff;
+    color: #bcbcbc;
     width: 100%;
     display: grid;
     grid-template-areas: "A A B C D F F G G J J L";
     gap: 10px;
     grid-template-columns: 180px 100px 50px 70px repeat(4, 1fr) 50px;
+    grid-template-rows: auto;
+    align-items: center;
+    overflow-wrap: anywhere;
   }
   p:nth-of-type(1n) {
     grid-area: "A";
@@ -77,6 +72,43 @@ export const OrdersContainer = styled.div`
     padding: 10px;
     :hover {
       background-color: #434b52;
+      p {
+        color: #fff;
+      }
+    }
+    button {
+      border: none;
+      background-color: transparent;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      :hover {
+        color: #57afc5;
+      }
+    }
+  }
+  div {
+    padding: 10px;
+    background-color: #202020;
+    color: #fff;
+    p {
+      font-weight: 800;
+      letter-spacing: 1px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  @media screen and (max-width: 1380px) {
+    div,
+    li {
+      grid-template-columns: 1fr 1fr 1fr 1fr repeat(4, 1fr) 1fr;
+      height: fit-content;
+    }
+  }
+  @media screen and (max-width: 1150px) {
+    ul {
+      height: calc(33vh);
     }
   }
 `;

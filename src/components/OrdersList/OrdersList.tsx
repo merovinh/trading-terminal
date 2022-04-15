@@ -1,14 +1,38 @@
 import { OrdersContainer, OrdersItem } from "./OrdersList.styles";
 
-const OrdersList = ({ ordersArray }: any) => {
+const OrdersList = ({ ordersArray, cancelFunction }: any) => {
+  const renderDate = (date: string) => {
+    const newDate = new Date(date);
+    const options: any = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "numeric",
+      second: "numeric",
+      hourCycle: "h24",
+    };
+    return newDate.toLocaleString("en-US", options).toString();
+  };
+
+  const handleClick = (e: any) => {
+    const key = e.target.parentElement.dataset.key;
+    const symbol = e.target.parentElement.dataset.sybmol;
+    cancelFunction(key, symbol);
+  };
+
   const renderOrders = () => {
     return ordersArray.map((elem: any) => (
       <OrdersItem
         key={elem.id}
         data-key={elem.id}
+        data-sybmol={elem.symbol}
         // onClick={(e: any) => console.log(e.target.dataset.key)}
       >
-        <p>{elem.datetime}</p>
+        <p>
+          {/* {elem.datetime} */}
+          {renderDate(elem.datetime)}
+        </p>
         <p>{elem.symbol}</p>
         <p>{elem.type}</p>
         <p>{elem.side}</p>
@@ -16,7 +40,7 @@ const OrdersList = ({ ordersArray }: any) => {
         <p>{elem.amount}</p>
         <p>{elem.filled}</p>
         <p>{elem.remaining}</p>
-        <button>Cansel</button>
+        <button onClick={handleClick}>Cancel</button>
       </OrdersItem>
     ));
   };
@@ -34,20 +58,7 @@ const OrdersList = ({ ordersArray }: any) => {
         <p>Unfilled</p>
         <p>-</p>
       </div>
-      <ul>
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-        {renderOrders()}
-      </ul>
+      <ul>{renderOrders()}</ul>
     </OrdersContainer>
   );
 };
