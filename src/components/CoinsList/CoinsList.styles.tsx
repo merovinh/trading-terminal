@@ -2,6 +2,9 @@ import styled from "@emotion/styled";
 
 export const ListContainer = styled.div`
   min-width: 200px;
+  @media screen and (max-width: 1380px) {
+    min-width: 80px;
+  }
 `;
 export const InputContainer = styled.div`
   background-color: #242424;
@@ -40,6 +43,10 @@ export const StyledCoinsList = styled.ul`
     border: 1px solid #f1f1f1;
     transform: rotate(180deg);
   }
+
+  @media screen and (max-width: 1150px) {
+    height: calc(60vh - 56px - 57px);
+  }
 `;
 
 export const StyledCoinsItem = styled.li`
@@ -53,5 +60,8 @@ export const StyledCoinsItem = styled.li`
     color: #000;
     background-color: #fff;
     font-weight: 500;
+  }
+  @media screen and (min-width: 1150px) and (max-width: 1380px) {
+    padding: 4px 2px 4px 5px;
   }
 `;

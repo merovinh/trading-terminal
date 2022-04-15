@@ -20,6 +20,13 @@ export const StyledForm = styled.form`
       }
     }
   }
+  @media screen and (max-width: 1150px) {
+    gap: 10px;
+    margin-left: 228px;
+  }
+  @media screen and (max-width: 745px) {
+    margin-left: 100px;
+  }
 `;
 
 export const SwitchButton = styled.button`
