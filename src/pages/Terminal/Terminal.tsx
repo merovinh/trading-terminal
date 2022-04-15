@@ -1,10 +1,11 @@
 import { isString } from "formik";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { CoinsList } from "../../components/CoinsList";
 import { FormAction } from "../../components/Forms/FormAction/";
 import { isNotValidFormAction } from "../../components/Forms/FormAction/validate";
 import { OrdersList } from "../../components/OrdersList";
+import { TerminalContainer } from "./Terminal.style";
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
   let kucoin: any = new ccxt.kucoin({
@@ -83,12 +84,15 @@ const Terminal = () => {
     handleBalance();
   }, [action, balance, selectedCoin]);
 
-  useEffect(() => {
+  const handleOrders = useCallback(() => {
     kucoin.setSandboxMode(true);
     kucoin.fetchOpenOrders().then((res: any) => {
       setOrders(res);
-      console.log(res);
     });
+  }, [kucoin]);
+
+  useEffect(() => {
+    handleOrders();
   }, [balance]);
 
   useEffect(() => {
@@ -122,8 +126,18 @@ const Terminal = () => {
       });
   };
 
+  const cancelOrder = (orderId: string, symbol: string) => {
+    kucoin.setSandboxMode(true);
+    kucoin.cancelOrder(orderId, symbol).then((res: any) => {
+      kucoin.fetchBalance().then((res: any) => {
+        setBalance(res);
+      });
+      handleOrders();
+    });
+  };
+
   return (
-    <div style={{ display: "flex", gap: "40px" }}>
+    <TerminalContainer>
       <CoinsList coins={coins} selectCoin={handleClick} />
       <FormAction
         selectedCoin={selectedCoin}
@@ -139,8 +153,8 @@ const Terminal = () => {
         mode={mode}
         handleModeChange={handleModeChange}
       />
-      <OrdersList ordersArray={orders} />
-    </div>
+      <OrdersList ordersArray={orders} cancelFunction={cancelOrder} />
+    </TerminalContainer>
   );
 };
 export default Terminal;
