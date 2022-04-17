@@ -26,6 +26,7 @@ const FormAction = ({
   accuracy,
   mode,
   handleModeChange,
+  fee,
 }: any) => {
   const defineCoin = () => {
     if (selectedCoin) {
@@ -42,11 +43,27 @@ const FormAction = ({
     const procent = +parseInt(e.target.innerText) * 0.01;
     if (mode === "limit") {
       if (limitValue) {
-        amountResult = (procent * available) / limitValue;
+        if (procent === 1) {
+          const subFee = available * fee.maker;
+          amountResult = available / limitValue;
+          amountResult = amountResult - amountResult * fee.maker;
+          console.log(amountResult);
+          console.log(subFee, available, fee, amountResult);
+        } else {
+          amountResult = (procent * available) / limitValue;
+        }
+        console.log(
+          `Result: ${amountResult}\nProcent: ${procent}\nLimit: ${limitValue}\nmaker: ${fee.maker}`
+        );
       } else amountResult = 0;
-    } else if (mode === "market") amountResult = available * procent;
-    console.log(limitValue);
-
+    } else if (mode === "market") {
+      if (procent === 1) {
+        amountResult = available * procent;
+        amountResult = amountResult - amountResult * fee.taker;
+      } else {
+        amountResult = available * procent;
+      }
+    }
     handleAmountChange(amountResult.toFixed(accuracy.precision.amount));
   };
 
