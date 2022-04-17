@@ -30,6 +30,8 @@ const Terminal = () => {
   const [valid, setValid]: [string | boolean, any] =
     useState("Please select coin");
 
+  const [fee, setFee] = useState({ maker: 0, taker: 0 });
+
   const [orders, setOrders] = useState([]);
 
   const [mode, setMode] = useState("limit");
@@ -37,10 +39,16 @@ const Terminal = () => {
   const handleModeChange = (value: string) => setMode(value);
 
   const handleAmountChange = (value: string | number) => {
-    setAmountValue(+value);
+    const stringValue = value.toString();
+    if (stringValue[stringValue.length - 1] === ".") {
+      setAmountValue(value);
+    } else setAmountValue(+value);
   };
   const handleLimitChange = (value: string | number) => {
-    setLimitValue(+value);
+    const stringValue = value.toString();
+    if (stringValue[stringValue.length - 1] === ".") {
+      setLimitValue(value);
+    } else setLimitValue(+value);
   };
 
   const handleClick = (value: string) => {
@@ -50,10 +58,16 @@ const Terminal = () => {
     for (let key of coins) {
       if (key.symbol === value) accuracy = key;
     }
-    console.log(accuracy);
     setAccuracy(accuracy);
+    kucoin.setSandboxMode(true);
+    kucoin.fetchTradingFee(value).then((res: any) => {
+      const response: { taker: number; maker: number } = res
+        ? { taker: res.taker, maker: res.maker }
+        : { taker: 0, maker: 0 };
+      setFee(response);
+    });
   };
-  // console.log(coins);
+
   useEffect(() => {
     kucoin.setSandboxMode(true);
     console.log(
@@ -125,6 +139,7 @@ const Terminal = () => {
         console.log(res);
       });
   };
+  console.log(kucoin.markets);
 
   const cancelOrder = (orderId: string, symbol: string) => {
     kucoin.setSandboxMode(true);
@@ -152,6 +167,7 @@ const Terminal = () => {
         accuracy={accuracy}
         mode={mode}
         handleModeChange={handleModeChange}
+        fee={fee}
       />
       <OrdersList ordersArray={orders} cancelFunction={cancelOrder} />
     </TerminalContainer>

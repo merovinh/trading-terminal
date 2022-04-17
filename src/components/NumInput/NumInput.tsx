@@ -44,10 +44,21 @@ const NumInput = ({
         name={placeholder.toLowerCase()}
         lang="en"
         id={`${placeholder}`}
-        type={"number"}
+        type={"text"}
         placeholder={placeholder}
         value={disabled ? "" : hookValue}
-        onChange={(e) => handleValue((+e.target.value).toFixed(accuracy))}
+        onChange={(e) => {
+          let subValue: any = e.target.value;
+          if (isNaN(+subValue)) {
+            handleValue(+hookValue.toFixed(accuracy));
+          } else if (subValue[subValue.length - 1] === ".") {
+            handleValue(subValue);
+            console.log("Dot");
+          } else {
+            handleValue((+subValue).toFixed(accuracy));
+          }
+          console.log(subValue);
+        }}
       />
       <OperationsContainer>
         <label htmlFor={`${placeholder}`}>
