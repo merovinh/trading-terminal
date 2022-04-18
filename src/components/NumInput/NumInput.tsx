@@ -53,11 +53,9 @@ const NumInput = ({
             handleValue(+hookValue.toFixed(accuracy));
           } else if (subValue[subValue.length - 1] === ".") {
             handleValue(subValue);
-            console.log("Dot");
           } else {
             handleValue((+subValue).toFixed(accuracy));
           }
-          console.log(subValue);
         }}
       />
       <OperationsContainer>

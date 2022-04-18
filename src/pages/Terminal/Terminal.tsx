@@ -70,11 +70,9 @@ const Terminal = () => {
 
   useEffect(() => {
     kucoin.setSandboxMode(true);
-    console.log(
-      kucoin.fetchBalance().then((res: any) => {
-        setBalance(res);
-      })
-    );
+    kucoin.fetchBalance().then((res: any) => {
+      setBalance(res);
+    });
     kucoin.fetchMarkets().then((res: any) => setCoins(res));
   }, []);
 
@@ -116,14 +114,11 @@ const Terminal = () => {
   const handleAction = (e: any) => {
     e.preventDefault();
     isNotValidFormAction(mode, amountValue, limitValue, setValid);
-    console.log(valid);
     if (!selectedCoin) return toast.error("Please select coin!");
     if (isString(valid)) return toast.error(valid);
-    console.log(selectedCoin);
     kucoin.setSandboxMode(true);
     const actionCoin: string = `${selectedCoin.amount}/${selectedCoin.limit}`;
     const limitUpMode = mode === "limit" ? limitValue : undefined;
-    console.log();
 
     kucoin
       .createOrder(actionCoin, mode, action, amountValue, limitUpMode)
@@ -131,15 +126,12 @@ const Terminal = () => {
         kucoin.fetchBalance().then((res: any) => {
           setBalance(res);
         });
-        console.log(data);
         toast.success("Success!");
       }) // fullified => fetchOrders
       .catch((res: any) => {
         toast.error(res.message);
-        console.log(res);
       });
   };
-  console.log(kucoin.markets);
 
   const cancelOrder = (orderId: string, symbol: string) => {
     kucoin.setSandboxMode(true);
@@ -150,6 +142,7 @@ const Terminal = () => {
       handleOrders();
     });
   };
+  console.log(balance);
 
   return (
     <TerminalContainer>

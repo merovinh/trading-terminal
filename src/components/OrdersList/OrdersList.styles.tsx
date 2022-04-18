@@ -37,6 +37,9 @@ export const OrdersContainer = styled.div`
     grid-template-rows: auto;
     align-items: center;
     overflow-wrap: anywhere;
+    p {
+      font-size: 13px;
+    }
   }
   p:nth-of-type(1n) {
     grid-area: "A";
@@ -52,15 +55,19 @@ export const OrdersContainer = styled.div`
   }
   p:nth-of-type(5n) {
     grid-area: "F";
+    text-align: right;
   }
   p:nth-of-type(6n) {
     grid-area: "G";
+    text-align: right;
   }
   p:nth-of-type(7n) {
     grid-area: "J";
+    text-align: right;
   }
   p:nth-of-type(8n) {
     grid-area: "L";
+    text-align: right;
   }
 
   li:nth-of-type(1n) {
@@ -104,6 +111,9 @@ export const OrdersContainer = styled.div`
     li {
       grid-template-columns: 1fr 1fr 1fr 1fr repeat(4, 1fr) 1fr;
       height: fit-content;
+      p {
+        font-size: 11px;
+      }
     }
   }
   @media screen and (max-width: 1150px) {

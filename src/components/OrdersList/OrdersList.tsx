@@ -22,27 +22,31 @@ const OrdersList = ({ ordersArray, cancelFunction }: any) => {
   };
 
   const renderOrders = () => {
-    return ordersArray.map((elem: any) => (
-      <OrdersItem
-        key={elem.id}
-        data-key={elem.id}
-        data-sybmol={elem.symbol}
-        // onClick={(e: any) => console.log(e.target.dataset.key)}
-      >
-        <p>
-          {/* {elem.datetime} */}
-          {renderDate(elem.datetime)}
-        </p>
-        <p>{elem.symbol}</p>
-        <p>{elem.type}</p>
-        <p>{elem.side}</p>
-        <p>{elem.price}</p>
-        <p>{elem.amount}</p>
-        <p>{elem.filled}</p>
-        <p>{elem.remaining}</p>
-        <button onClick={handleClick}>Cancel</button>
-      </OrdersItem>
-    ));
+    return ordersArray.map((elem: any) => {
+      const splittedSymbol = elem.symbol.split("/");
+
+      return (
+        <OrdersItem key={elem.id} data-key={elem.id} data-sybmol={elem.symbol}>
+          <p>{renderDate(elem.datetime)}</p>
+          <p>{elem.symbol}</p>
+          <p>{elem.type}</p>
+          <p>{elem.side}</p>
+          <p>
+            {elem.price} {splittedSymbol[1]}
+          </p>
+          <p>
+            {elem.amount} {splittedSymbol[0]}
+          </p>
+          <p>
+            {elem.filled} {splittedSymbol[0]}
+          </p>
+          <p>
+            {elem.remaining} {splittedSymbol[0]}
+          </p>
+          <button onClick={handleClick}>Cancel</button>
+        </OrdersItem>
+      );
+    });
   };
 
   return (
