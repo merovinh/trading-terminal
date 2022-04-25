@@ -12,6 +12,7 @@ export const StyledForm = styled.form`
   }
   .switchContainer {
     display: flex;
+    gap: 9px;
     p {
       transition: color 200ms ease;
       color: #606060;

@@ -39,6 +39,7 @@ const NumInput = ({
   return (
     <InputContainer>
       <StyledInput
+        autoComplete="off"
         disabled={disabled}
         className={disabled ? "disabled" : ""}
         name={placeholder.toLowerCase()}
