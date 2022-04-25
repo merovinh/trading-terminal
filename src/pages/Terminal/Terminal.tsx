@@ -1,10 +1,16 @@
 import { isString } from "formik";
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { CoinsList } from "../../components/CoinsList";
 import { FormAction } from "../../components/Forms/FormAction/";
 import { isNotValidFormAction } from "../../components/Forms/FormAction/validate";
 import { OrdersList } from "../../components/OrdersList";
+import { fetchBalance } from "../../redux/balanceReducer";
+import { fetchCoins } from "../../redux/coinsReducer";
+import { fetchOrders } from "../../redux/ordersReducer";
+import { selectCoin } from "../../redux/selectCoinReducer";
+import { store } from "../../redux/store";
 import { TerminalContainer } from "./Terminal.style";
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
@@ -14,6 +20,8 @@ const Terminal = () => {
     password: process.env.REACT_APP_password,
     proxy: process.env.REACT_APP_proxy,
   });
+
+  const dispatch = useDispatch();
 
   const [coins, setCoins]: [any, any] = useState([]);
   const [selectedCoin, setSelectedCoin]: any = useState(null);
@@ -66,7 +74,13 @@ const Terminal = () => {
         : { taker: 0, maker: 0 };
       setFee(response);
     });
+
+    dispatch(fetchBalance(kucoin));
+    dispatch(fetchCoins(kucoin));
+    dispatch(selectCoin({ exchange: kucoin, coinName: value }));
+    dispatch(fetchOrders(kucoin));
   };
+  console.log(store.getState());
 
   useEffect(() => {
     kucoin.setSandboxMode(true);
@@ -142,7 +156,6 @@ const Terminal = () => {
       handleOrders();
     });
   };
-  console.log(balance);
 
   return (
     <TerminalContainer>
