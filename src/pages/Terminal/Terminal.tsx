@@ -1,6 +1,7 @@
 import { isString } from "formik";
+import { stat } from "fs";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { CoinsList } from "../../components/CoinsList";
 import { FormAction } from "../../components/Forms/FormAction/";
@@ -8,8 +9,9 @@ import { isNotValidFormAction } from "../../components/Forms/FormAction/validate
 import { OrdersList } from "../../components/OrdersList";
 import { fetchBalance } from "../../redux/balanceReducer";
 import { fetchCoins } from "../../redux/coinsReducer";
+import { fetchFee } from "../../redux/feeReducer";
 import { fetchOrders } from "../../redux/ordersReducer";
-import { selectCoin } from "../../redux/selectCoinReducer";
+import { coinSelected } from "../../redux/selectCoinReducer";
 import { store } from "../../redux/store";
 import { TerminalContainer } from "./Terminal.style";
 const Terminal = () => {
@@ -22,9 +24,17 @@ const Terminal = () => {
   });
 
   const dispatch = useDispatch();
+  let balance = useSelector((state: any) =>
+    state.balance.data ? state.balance.data : null
+  );
 
-  const [coins, setCoins]: [any, any] = useState([]);
-  const [selectedCoin, setSelectedCoin]: any = useState(null);
+  let coins: any = useSelector((state: any) =>
+    state.coins.data ? state.coins.data : []
+  );
+
+  let selectedCoin = useSelector((state: any) =>
+    state.selectedCoin.data ? state.selectedCoin.data : null
+  );
 
   const [accuracy, setAccuracy] = useState({
     precision: { price: 11, amount: 11 },
@@ -33,14 +43,17 @@ const Terminal = () => {
   const [amountValue, setAmountValue]: [any, any] = useState("");
   const [limitValue, setLimitValue]: [any, any] = useState("");
 
-  const [balance, setBalance]: [any, any] = useState(null);
   const [available, setAvailable]: [any, any] = useState(0);
   const [valid, setValid]: [string | boolean, any] =
     useState("Please select coin");
 
-  const [fee, setFee] = useState({ maker: 0, taker: 0 });
+  let fee = useSelector((state: any) =>
+    state.fee.data ? state.fee.data : { maker: 0, taker: 0 }
+  );
 
-  const [orders, setOrders] = useState([]);
+  let orders = useSelector((state: any) =>
+    state.orders.data ? state.orders.data : []
+  );
 
   const [mode, setMode] = useState("limit");
 
@@ -61,33 +74,18 @@ const Terminal = () => {
 
   const handleClick = (value: string) => {
     const splittedValue = value.split("/");
-    setSelectedCoin({ limit: splittedValue[1], amount: splittedValue[0] });
+    dispatch(coinSelected(value));
+    dispatch(fetchFee({ exchange: kucoin, coinName: value }));
     let accuracy: any;
     for (let key of coins) {
       if (key.symbol === value) accuracy = key;
     }
     setAccuracy(accuracy);
-    kucoin.setSandboxMode(true);
-    kucoin.fetchTradingFee(value).then((res: any) => {
-      const response: { taker: number; maker: number } = res
-        ? { taker: res.taker, maker: res.maker }
-        : { taker: 0, maker: 0 };
-      setFee(response);
-    });
-
-    dispatch(fetchBalance(kucoin));
-    dispatch(fetchCoins(kucoin));
-    dispatch(selectCoin({ exchange: kucoin, coinName: value }));
-    dispatch(fetchOrders(kucoin));
   };
-  console.log(store.getState());
 
   useEffect(() => {
-    kucoin.setSandboxMode(true);
-    kucoin.fetchBalance().then((res: any) => {
-      setBalance(res);
-    });
-    kucoin.fetchMarkets().then((res: any) => setCoins(res));
+    dispatch(fetchBalance(kucoin));
+    dispatch(fetchCoins(kucoin));
   }, []);
 
   const [action, setAction] = useState("buy");
@@ -110,15 +108,8 @@ const Terminal = () => {
     handleBalance();
   }, [action, balance, selectedCoin]);
 
-  const handleOrders = useCallback(() => {
-    kucoin.setSandboxMode(true);
-    kucoin.fetchOpenOrders().then((res: any) => {
-      setOrders(res);
-    });
-  }, [kucoin]);
-
   useEffect(() => {
-    handleOrders();
+    dispatch(fetchOrders(kucoin));
   }, [balance]);
 
   useEffect(() => {
@@ -130,16 +121,14 @@ const Terminal = () => {
     isNotValidFormAction(mode, amountValue, limitValue, setValid);
     if (!selectedCoin) return toast.error("Please select coin!");
     if (isString(valid)) return toast.error(valid);
-    kucoin.setSandboxMode(true);
+    kucoin.setSandboxMode(true); //=========================
     const actionCoin: string = `${selectedCoin.amount}/${selectedCoin.limit}`;
     const limitUpMode = mode === "limit" ? limitValue : undefined;
 
     kucoin
       .createOrder(actionCoin, mode, action, amountValue, limitUpMode)
       .then((data: any) => {
-        kucoin.fetchBalance().then((res: any) => {
-          setBalance(res);
-        });
+        dispatch(fetchBalance(kucoin));
         toast.success("Success!");
       }) // fullified => fetchOrders
       .catch((res: any) => {
@@ -148,12 +137,10 @@ const Terminal = () => {
   };
 
   const cancelOrder = (orderId: string, symbol: string) => {
-    kucoin.setSandboxMode(true);
+    kucoin.setSandboxMode(true); //=========================
     kucoin.cancelOrder(orderId, symbol).then((res: any) => {
-      kucoin.fetchBalance().then((res: any) => {
-        setBalance(res);
-      });
-      handleOrders();
+      dispatch(fetchBalance(kucoin));
+      dispatch(fetchOrders(kucoin));
     });
   };
 
