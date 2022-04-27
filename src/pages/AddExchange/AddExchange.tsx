@@ -1,5 +1,7 @@
+import FormLogin from "../../components/Forms/FormLogin/FormLogin";
+
 const AddExchange = () => {
-  return <>AAAAAAAA</>;
+  return <FormLogin />;
 };
 
 export default AddExchange;
