@@ -42,31 +42,23 @@ export const OrdersContainer = styled.div`
     }
   }
   p:nth-of-type(1n) {
-    grid-area: "A";
   }
   p:nth-of-type(2n) {
-    grid-area: "B";
   }
   p:nth-of-type(3n) {
-    grid-area: "C";
   }
   p:nth-of-type(4n) {
-    grid-area: "D";
   }
   p:nth-of-type(5n) {
-    grid-area: "F";
     text-align: right;
   }
   p:nth-of-type(6n) {
-    grid-area: "G";
     text-align: right;
   }
   p:nth-of-type(7n) {
-    grid-area: "J";
     text-align: right;
   }
   p:nth-of-type(8n) {
-    grid-area: "L";
     text-align: right;
   }
 
