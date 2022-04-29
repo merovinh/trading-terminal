@@ -4,12 +4,14 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { StyledItem } from "./CustomSelect.styles";
 
-const CustomSelect = () => {
+const CustomSelect = ({ handleChange }: { handleChange: any }) => {
   const [exchange, setExchange] = React.useState("");
 
-  const handleChange = (event: SelectChangeEvent) => {
+  const handleSelect = (event: SelectChangeEvent) => {
     setExchange(event.target.value);
+    handleChange(event.target.value);
   };
 
   const theme = createTheme({
@@ -45,16 +47,44 @@ const CustomSelect = () => {
         >
           Exchange
         </InputLabel>
-        <Select value={exchange} label="Exchange" onChange={handleChange}>
-          <MenuItem value="">
-            <em>None</em>
+        <Select
+          value={exchange}
+          label="Exchange"
+          onChange={handleSelect}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "5px",
+          }}
+        >
+          <MenuItem value={"kucoin"}>
+            <StyledItem>
+              <img
+                alt="img"
+                src={
+                  "https://play-lh.googleusercontent.com/dQ9d57qXuaxTEVwMnS6J4qxVsZLSJYSm-X6zKzV-_w7ClLYh8jSe0J83MhSUgy2kuA"
+                }
+                width={25}
+                height={25}
+              />{" "}
+              Kucoin
+            </StyledItem>
           </MenuItem>
-          <MenuItem value={10}>
-            {/* <img alt="img" src={require("./5176.jpg")} width={25} height={25} />{" "} */}
-            Ten
+          <MenuItem value={"binance"}>
+            <StyledItem>
+              {" "}
+              <img
+                alt="img"
+                src={
+                  "https://public.bnbstatic.com/20190405/eb2349c3-b2f8-4a93-a286-8f86a62ea9d8.png"
+                }
+                width={25}
+                height={25}
+              />{" "}
+              Binance
+            </StyledItem>
           </MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
         </Select>
       </FormControl>
     </ThemeProvider>

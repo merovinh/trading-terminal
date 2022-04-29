@@ -2,7 +2,17 @@ import { InputLabel } from "@mui/material";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
-export const CustomInput = ({ label }: { label: string }) => {
+export const CustomInput = ({
+  label,
+  handleChange,
+}: {
+  label: string;
+  handleChange: any;
+}) => {
+  const handleType = (e: any) => {
+    handleChange(e.target.value);
+  };
+
   return (
     <Box>
       <InputLabel
@@ -19,10 +29,12 @@ export const CustomInput = ({ label }: { label: string }) => {
         {label}
       </InputLabel>
       <TextField
+        autoComplete="off"
         sx={{
           backgroundColor: "#f2f2f2",
           borderRadius: "3px",
         }}
+        onChange={handleType}
       />
     </Box>
   );
