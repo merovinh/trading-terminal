@@ -91,3 +91,46 @@ catch (e) { alert('Failed to save the file !'); }
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+const express = require('express');
+const serv = express();
+
+
+const http = require("http");
+
+
+const host = 'localhost';
+const port = 9191;
+
+
+// const requestListener = function (req, res) {
+//     res.setHeader("My-Response", req);
+
+//     // res.json({ a: 1 });
+
+//     res.writeHead(200);
+//     // res.end(`{"message": "This is a JSON response"}`);
+// };
+
+serv.get('/array', function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.json([{
+        number: 1,
+        name: 'John',
+        gender: 'male'
+    },
+    {
+        number: 2,
+        name: 'Ashley',
+        gender: 'female'
+    }
+    ]);
+});
+
+
+const server = http.createServer(serv);
+server.listen(port, host, () => {
+    console.log(`Server is running on http://${host}:${port} ABRA KADABRA`);
+
+});

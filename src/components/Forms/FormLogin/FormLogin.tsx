@@ -24,9 +24,11 @@ const FormLogin = () => {
           proxy: process.env.REACT_APP_proxy,
         });
 
-        kucoin.setSandboxMode(true);
-        let res = await kucoin.fetchBalance();
-        console.log(res);
+        // kucoin.setSandboxMode(true);
+        // let res = await kucoin.fetchBalance();
+        // console.log(res);
+
+        fetch("http://localhost:9191/array").then((ar: any) => console.log(ar));
       }}
     >
       {({
