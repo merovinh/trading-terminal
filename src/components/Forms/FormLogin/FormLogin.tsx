@@ -28,7 +28,18 @@ const FormLogin = () => {
         // let res = await kucoin.fetchBalance();
         // console.log(res);
 
-        fetch("http://localhost:9191/array").then((ar: any) => console.log(ar));
+        const axios = require("axios").default;
+
+        axios
+          .get("http://localhost:9191/exchanges", { name: "Phillip", age: 20 })
+          .then((ae: any) => console.log(ae));
+        axios
+          .post("http://localhost:9191/add", values, {
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+            },
+          })
+          .then((ae: any) => console.log(ae.payload));
       }}
     >
       {({

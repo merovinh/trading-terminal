@@ -1,0 +1,1 @@
+{"exchange":"binance","name":"","apiKey":"gtwegewgew","apiSecret":"","password":""}

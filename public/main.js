@@ -94,6 +94,10 @@ catch (e) { alert('Failed to save the file !'); }
 
 const express = require('express');
 const serv = express();
+const bodyParser = require("body-parser");
+const router = express.Router();
+
+
 
 
 const http = require("http");
@@ -102,6 +106,9 @@ const http = require("http");
 const host = 'localhost';
 const port = 9191;
 
+
+serv.use(bodyParser.urlencoded({ extended: false }));
+serv.use(bodyParser.json());
 
 // const requestListener = function (req, res) {
 //     res.setHeader("My-Response", req);
@@ -112,21 +119,30 @@ const port = 9191;
 //     // res.end(`{"message": "This is a JSON response"}`);
 // };
 
-serv.get('/array', function (req, res) {
-    res.setHeader("Content-Type", "application/json");
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.json([{
-        number: 1,
-        name: 'John',
-        gender: 'male'
-    },
-    {
-        number: 2,
-        name: 'Ashley',
-        gender: 'female'
-    }
-    ]);
+serv.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+
+    res.header("Access-Control-Allow-Headers", "Content-Type, access-control-allow-origin");
+    next();
 });
+
+
+serv.get("/exchanges", function (req, res) {
+    // res.setHeader("Access-Control-Allow-Origin", "*");
+    res.json({ "fwef": 3252 });
+});
+
+serv.post("/add", function (req, res) {
+    // res.setHeader("Access-Control-Allow-Origin", "*");
+    try { fs.writeFileSync('myfile1.txt', JSON.stringify(req.body), 'utf-8'); }
+    catch (e) { alert('Failed to save the file !'); }
+    res.json({ dewfew: req.body });
+});
+
+
+
 
 
 const server = http.createServer(serv);
