@@ -30,8 +30,10 @@ const FormLogin = () => {
 
         const axios = require("axios").default;
 
+        const generateUniqueId = () => Math.random().toString(16).slice(2);
+
         axios
-          .get("http://localhost:9191/exchanges", { name: "Phillip", age: 20 })
+          .get("http://localhost:9191/exchanges")
           .then((ae: any) => console.log(ae));
         axios
           .post("http://localhost:9191/add", values, {
@@ -39,7 +41,7 @@ const FormLogin = () => {
               "Access-Control-Allow-Origin": "*",
             },
           })
-          .then((ae: any) => console.log(ae.payload));
+          .then((ae: any) => console.log(ae.data));
       }}
     >
       {({
