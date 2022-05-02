@@ -44,8 +44,8 @@ app.on('activate', () => {
 })
 
 const fs = require('fs');
-try { fs.writeFileSync('myfile.txt', 'the text to write in the file', 'utf-8'); }
-catch (e) { alert('Failed to save the file !'); }
+// try { fs.writeFileSync('myfile.txt', 'the text to write in the file', 'utf-8'); }
+// catch (e) { alert('Failed to save the file !'); }
 
 // const http = require('http');
 
@@ -98,8 +98,6 @@ const bodyParser = require("body-parser");
 const router = express.Router();
 
 
-
-
 const http = require("http");
 
 
@@ -128,17 +126,35 @@ serv.use(function (req, res, next) {
     next();
 });
 
+const pathToJSON = "exchanges_API_Info.json";
 
 serv.get("/exchanges", function (req, res) {
-    // res.setHeader("Access-Control-Allow-Origin", "*");
-    res.json({ "fwef": 3252 });
+    let exchanges = [];
+    if (fs.existsSync(pathToJSON)) {
+        exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
+    }
+    res.json(exchanges);
 });
 
 serv.post("/add", function (req, res) {
-    // res.setHeader("Access-Control-Allow-Origin", "*");
-    try { fs.writeFileSync('myfile1.txt', JSON.stringify(req.body), 'utf-8'); }
-    catch (e) { alert('Failed to save the file !'); }
-    res.json({ dewfew: req.body });
+    let exchanges = [];
+    if (fs.existsSync(pathToJSON)) {
+        exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
+        exchanges.push(req.body);
+        try { fs.writeFileSync(pathToJSON, JSON.stringify(exchanges), 'utf-8'); }
+        catch (e) { console.log('Failed to save the file !'); }
+
+    }
+    else {
+        try {
+            fs.writeFileSync(pathToJSON, JSON.stringify([req.body]), 'utf-8');
+            exchanges = [req.body];
+        }
+        catch (e) { console.log('Failed to save the file !'); }
+
+    }
+
+    res.json(exchanges);
 });
 
 
