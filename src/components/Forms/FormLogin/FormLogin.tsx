@@ -1,9 +1,16 @@
 import { Formik } from "formik";
+import { toast } from "react-toastify";
 import { CustomInput } from "./CustomInput";
 import { CustomSelect } from "./CustomSelect";
 import { FormContainer } from "./FormLogin.styles";
+import schema from "./validationSchema";
 
 const FormLogin = () => {
+  const showErrors = (errorsObj: any) => {
+    let error: any = Object.values(errorsObj)[0];
+    toast.error(error);
+  };
+
   return (
     <Formik
       initialValues={{
@@ -12,36 +19,66 @@ const FormLogin = () => {
         apiKey: "",
         apiSecret: "",
         password: "",
+        needPassword: false,
       }}
-      onSubmit={async (values) => {
+      validationSchema={schema}
+      onSubmit={async (values: any, { resetForm }) => {
         console.log(values);
         const ccxt = (window as any).ccxt;
 
-        let kucoin: any = new ccxt.kucoin({
-          apiKey: values.apiKey,
-          secret: values.apiSecret,
-          password: values.password,
-          proxy: process.env.REACT_APP_proxy,
-        });
-
-        // kucoin.setSandboxMode(true);
-        // let res = await kucoin.fetchBalance();
-        // console.log(res);
-
+        let newExchange: any;
+        if (values.needPassword) {
+          newExchange = new ccxt[values.exchange]({
+            apiKey: values.apiKey,
+            secret: values.apiSecret,
+            password: values.password,
+            proxy: process.env.REACT_APP_proxy,
+          });
+        } else {
+          newExchange = new ccxt[values.exchange]({
+            apiKey: values.apiKey,
+            secret: values.apiSecret,
+            proxy: process.env.REACT_APP_proxy,
+          });
+        }
         const axios = require("axios").default;
 
         const generateUniqueId = () => Math.random().toString(16).slice(2);
 
-        axios
-          .get("http://localhost:9191/exchanges")
-          .then((ae: any) => console.log(ae));
-        axios
-          .post("http://localhost:9191/add", values, {
-            headers: {
-              "Access-Control-Allow-Origin": "*",
-            },
+        let exchangeIsAlive: boolean;
+
+        newExchange.setSandboxMode(true); //====================
+        newExchange
+          .fetchBalance()
+          .then((res: any) => (exchangeIsAlive = true))
+          .catch((res: any) => {
+            exchangeIsAlive = false;
+            toast.error(res.message);
           })
-          .then((ae: any) => console.log(ae.data));
+          .then(() => {
+            if (exchangeIsAlive) {
+              axios
+                .post(
+                  "http://localhost:9191/add",
+                  { id: generateUniqueId(), ...values },
+                  {
+                    headers: {
+                      "Access-Control-Allow-Origin": "*",
+                    },
+                  }
+                )
+                .then((res: any) => {
+                  console.log("values1: ", values);
+                  resetForm({ values: "" });
+                  console.log("values2: ", values);
+                });
+
+              // axios
+              //   .get("http://localhost:9191/exchanges")
+              //   .then((ae: any) => console.log(ae));
+              // console.log("values1: ", values);
+            }
+          });
       }}
     >
       {({
@@ -59,7 +96,11 @@ const FormLogin = () => {
               <CustomSelect
                 handleChange={(value: any) => {
                   setFieldValue("exchange", value);
+                  value === "kucoin"
+                    ? setFieldValue("needPassword", true)
+                    : setFieldValue("needPassword", false);
                 }}
+                value={values.exchange}
               />
             </div>
             <div>
@@ -68,6 +109,7 @@ const FormLogin = () => {
                 handleChange={(value: any) => {
                   setFieldValue("name", value);
                 }}
+                value={values.name}
               />
             </div>
             <div>
@@ -76,6 +118,7 @@ const FormLogin = () => {
                 handleChange={(value: any) => {
                   setFieldValue("apiKey", value);
                 }}
+                value={values.apiKey}
               />
             </div>
             <div>
@@ -84,17 +127,23 @@ const FormLogin = () => {
                 handleChange={(value: any) => {
                   setFieldValue("apiSecret", value);
                 }}
+                value={values.apiSecret}
               />
             </div>
-            <div>
-              <CustomInput
-                label={"API Password"}
-                handleChange={(value: any) => {
-                  setFieldValue("password", value);
-                }}
-              />
-            </div>
-            <button type={"submit"}>Submit</button>
+            {values.needPassword && (
+              <div>
+                <CustomInput
+                  label={"API Password"}
+                  handleChange={(value: any) => {
+                    setFieldValue("password", value);
+                  }}
+                  value={values.password}
+                />
+              </div>
+            )}
+            <button type={"submit"} onClick={() => showErrors(errors)}>
+              Submit
+            </button>
           </FormContainer>
         </form>
       )}
