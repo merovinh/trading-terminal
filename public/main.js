@@ -141,13 +141,13 @@ serv.post("/add", function (req, res) {
     if (fs.existsSync(pathToJSON)) {
         exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
         exchanges.push(req.body);
-        try { fs.writeFileSync(pathToJSON, JSON.stringify(exchanges), 'utf-8'); }
+        try { fs.writeFileSync(pathToJSON, JSON.stringify(exchanges, null, 4), 'utf-8'); }
         catch (e) { console.log('Failed to save the file !'); }
 
     }
     else {
         try {
-            fs.writeFileSync(pathToJSON, JSON.stringify([req.body]), 'utf-8');
+            fs.writeFileSync(pathToJSON, JSON.stringify([req.body], null, 4), 'utf-8');
             exchanges = [req.body];
         }
         catch (e) { console.log('Failed to save the file !'); }
