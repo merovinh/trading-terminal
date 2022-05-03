@@ -12,8 +12,12 @@ import OptionGroupUnstyled, {
   OptionGroupUnstyledProps,
 } from "@mui/base/OptionGroupUnstyled";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { fetchExchanges } from "../../../redux/exchangesReducer";
 
 const SelectExchange = () => {
+  const dispatch = useDispatch();
+
   function CustomSelect(props: SelectUnstyledProps<string>) {
     const components: SelectUnstyledProps<string>["components"] = {
       Root: StyledButton,
@@ -39,21 +43,19 @@ const SelectExchange = () => {
   });
 
   const choseFunc = (e: any) => {
+    dispatch(fetchExchanges());
     console.log(e);
   };
 
   return (
     <CustomSelect onChange={choseFunc}>
-      <CustomOptionGroup label="Hobbits">
-        <StyledOption value="Frodo">Frodo</StyledOption>
-        <StyledOption value="Sam">Sam</StyledOption>
-        <StyledOption value="Merry">Merry</StyledOption>
-        <StyledOption value="Pippin">Pippin</StyledOption>
-      </CustomOptionGroup>
-      <CustomOptionGroup label="Elves">
-        <StyledOption value="Galadriel">Galadriel</StyledOption>
-        <StyledOption value="Legolas">Legolas</StyledOption>
-      </CustomOptionGroup>
+      <StyledOption value="Frodo">Frodo</StyledOption>
+      <StyledOption value="Sam">Sam</StyledOption>
+      <StyledOption value="Merry">Merry</StyledOption>
+      <StyledOption value="Pippin">Pippin</StyledOption>
+
+      <StyledOption value="Galadriel">Galadriel</StyledOption>
+      <StyledOption value="Legolas">Legolas</StyledOption>
     </CustomSelect>
   );
 };
