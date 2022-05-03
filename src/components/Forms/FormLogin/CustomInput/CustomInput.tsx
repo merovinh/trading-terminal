@@ -5,9 +5,11 @@ import TextField from "@mui/material/TextField";
 export const CustomInput = ({
   label,
   handleChange,
+  value,
 }: {
   label: string;
   handleChange: any;
+  value: any;
 }) => {
   const handleType = (e: any) => {
     handleChange(e.target.value);
@@ -35,6 +37,7 @@ export const CustomInput = ({
           borderRadius: "3px",
         }}
         onChange={handleType}
+        value={value}
       />
     </Box>
   );

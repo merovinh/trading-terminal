@@ -6,8 +6,17 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { StyledItem } from "./CustomSelect.styles";
 
-const CustomSelect = ({ handleChange }: { handleChange: any }) => {
-  const [exchange, setExchange] = React.useState("");
+const CustomSelect = ({
+  handleChange,
+  value,
+}: {
+  handleChange: any;
+  value: any;
+}) => {
+  const [exchange, setExchange] = React.useState(value);
+  React.useEffect(() => {
+    setExchange(value);
+  }, [value]);
 
   const handleSelect = (event: SelectChangeEvent) => {
     setExchange(event.target.value);
