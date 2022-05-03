@@ -154,5 +154,5 @@ export const StyledGroupOptions = styled("ul")`
 `;
 
 export const StyledPopper = styled(PopperUnstyled)`
-  z-index: 1;
+  z-index: 11;
 `;

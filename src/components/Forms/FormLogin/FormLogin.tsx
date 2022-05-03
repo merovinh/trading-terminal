@@ -68,15 +68,8 @@ const FormLogin = () => {
                   }
                 )
                 .then((res: any) => {
-                  console.log("values1: ", values);
                   resetForm({ values: "" });
-                  console.log("values2: ", values);
                 });
-
-              // axios
-              //   .get("http://localhost:9191/exchanges")
-              //   .then((ae: any) => console.log(ae));
-              // console.log("values1: ", values);
             }
           });
       }}
