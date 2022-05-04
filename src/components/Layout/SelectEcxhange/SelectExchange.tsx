@@ -11,13 +11,29 @@ import SelectUnstyled, { SelectUnstyledProps } from "@mui/base/SelectUnstyled";
 import OptionGroupUnstyled, {
   OptionGroupUnstyledProps,
 } from "@mui/base/OptionGroupUnstyled";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchExchanges } from "../../../redux/exchangesReducer";
+import { exchangeSelected } from "../../../redux/selectedExchangeReducer";
 
 const SelectExchange = () => {
   const dispatch = useDispatch();
+  const exchanges = useSelector((state: any) => state.exchanges.data || []);
+  const [saved, setSaved]: any = useState("fwef");
 
+  useEffect(() => {
+    dispatch(fetchExchanges());
+    const red: any = window.localStorage.getItem("selectedExchange");
+    setSaved(JSON.parse(red));
+    return;
+  }, []);
+
+  const renderExchanges = () =>
+    exchanges.map((elem: any) => (
+      <StyledOption key={elem.id} value={`${elem.id}`}>
+        {elem.name}
+      </StyledOption>
+    ));
   function CustomSelect(props: SelectUnstyledProps<string>) {
     const components: SelectUnstyledProps<string>["components"] = {
       Root: StyledButton,
@@ -42,20 +58,23 @@ const SelectExchange = () => {
     return <OptionGroupUnstyled {...props} ref={ref} components={components} />;
   });
 
-  const choseFunc = (e: any) => {
-    dispatch(fetchExchanges());
-    console.log(e);
+  const handleSelect = (e: any) => {
+    const exchange = exchanges.filter((elem: any) => elem.id === e);
+    dispatch(exchangeSelected(exchange[0]));
+    window.localStorage.setItem(
+      "selectedExchange",
+      JSON.stringify({ id: e, name: exchange[0].name })
+    );
+    console.log(saved);
   };
 
   return (
-    <CustomSelect onChange={choseFunc}>
-      <StyledOption value="Frodo">Frodo</StyledOption>
-      <StyledOption value="Sam">Sam</StyledOption>
-      <StyledOption value="Merry">Merry</StyledOption>
-      <StyledOption value="Pippin">Pippin</StyledOption>
-
-      <StyledOption value="Galadriel">Galadriel</StyledOption>
-      <StyledOption value="Legolas">Legolas</StyledOption>
+    <CustomSelect
+      value={saved.name}
+      disabled={!exchanges.length}
+      onChange={handleSelect}
+    >
+      {renderExchanges()}
     </CustomSelect>
   );
 };
