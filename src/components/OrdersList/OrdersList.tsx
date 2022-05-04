@@ -21,8 +21,8 @@ const OrdersList = ({ ordersArray, cancelFunction }: any) => {
     cancelFunction(key, symbol);
   };
 
-  const renderOrders = () => {
-    return ordersArray.map((elem: any) => {
+  const renderOrders = () =>
+    ordersArray.map((elem: any) => {
       const splittedSymbol = elem.symbol.split("/");
 
       return (
@@ -47,7 +47,6 @@ const OrdersList = ({ ordersArray, cancelFunction }: any) => {
         </OrdersItem>
       );
     });
-  };
 
   return (
     <OrdersContainer style={{ width: "100%" }}>
