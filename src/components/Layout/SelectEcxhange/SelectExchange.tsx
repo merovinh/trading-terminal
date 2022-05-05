@@ -1,81 +1,91 @@
-import {
-  StyledButton,
-  StyledGroupHeader,
-  StyledGroupOptions,
-  StyledGroupRoot,
-  StyledListbox,
-  StyledOption,
-  StyledPopper,
-} from "./SelectExchange.styles";
-import SelectUnstyled, { SelectUnstyledProps } from "@mui/base/SelectUnstyled";
-import OptionGroupUnstyled, {
-  OptionGroupUnstyledProps,
-} from "@mui/base/OptionGroupUnstyled";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchExchanges } from "../../../redux/exchangesReducer";
 import { exchangeSelected } from "../../../redux/selectedExchangeReducer";
 
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { borderColor } from "@mui/system";
+
 const SelectExchange = () => {
   const dispatch = useDispatch();
   const exchanges = useSelector((state: any) => state.exchanges.data || []);
-  const [saved, setSaved]: any = useState("fwef");
+  const lastExchange: any = window.localStorage.getItem("lastExchange");
+
+  const [selected, setSelected]: any = useState(
+    JSON.parse(lastExchange) || { name: "", id: "" }
+  );
 
   useEffect(() => {
     dispatch(fetchExchanges());
-    const red: any = window.localStorage.getItem("selectedExchange");
-    setSaved(JSON.parse(red));
     return;
   }, []);
 
+  useEffect(
+    () => window.localStorage.setItem("lastExchange", JSON.stringify(selected)),
+    [selected]
+  );
+
   const renderExchanges = () =>
     exchanges.map((elem: any) => (
-      <StyledOption key={elem.id} value={`${elem.id}`}>
+      <MenuItem
+        key={elem.id}
+        value={`${elem.name}`}
+        data-id={elem.id}
+        onClick={handleSelect}
+      >
         {elem.name}
-      </StyledOption>
+      </MenuItem>
     ));
-  function CustomSelect(props: SelectUnstyledProps<string>) {
-    const components: SelectUnstyledProps<string>["components"] = {
-      Root: StyledButton,
-      Listbox: StyledListbox,
-      Popper: StyledPopper,
-      ...props.components,
-    };
-    return <SelectUnstyled {...props} components={components} />;
-  }
-
-  const CustomOptionGroup = React.forwardRef(function CustomOptionGroup(
-    props: OptionGroupUnstyledProps,
-    ref: React.ForwardedRef<any>
-  ) {
-    const components: OptionGroupUnstyledProps["components"] = {
-      Root: StyledGroupRoot,
-      Label: StyledGroupHeader,
-      List: StyledGroupOptions,
-      ...props.components,
-    };
-
-    return <OptionGroupUnstyled {...props} ref={ref} components={components} />;
-  });
 
   const handleSelect = (e: any) => {
-    const exchange = exchanges.filter((elem: any) => elem.id === e);
-    dispatch(exchangeSelected(exchange[0]));
-    window.localStorage.setItem(
-      "selectedExchange",
-      JSON.stringify({ id: e, name: exchange[0].name })
-    );
-    console.log(saved);
+    const exchange = exchanges.filter(
+      (elem: any) => elem.id === e.currentTarget.dataset.id
+    )[0];
+    dispatch(exchangeSelected(exchange));
+    setSelected({
+      name: e.currentTarget.dataset.value,
+      id: e.currentTarget.dataset.id,
+    });
   };
 
   return (
-    <CustomSelect
-      value={saved.name}
-      disabled={!exchanges.length}
-      onChange={handleSelect}
-    >
-      {renderExchanges()}
-    </CustomSelect>
+    <>
+      <FormControl>
+        <InputLabel
+          id="demo-simple-select-helper-label"
+          sx={{
+            backgroundColor: "#fff",
+            padding: "0 3px",
+            borderRadius: "4px",
+          }}
+        >
+          Exchange
+        </InputLabel>
+        <Select
+          disabled={!exchanges.length}
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          value={selected.name}
+          label="Exchange"
+          // onChange={handleSelect}
+          sx={{
+            m: 0,
+            // padding: "5.5px 14px",
+            minWidth: 200,
+            minHeight: "100%",
+            backgroundColor: "#fff",
+            border: "none",
+            borderRadius: "4px 0 0 4px",
+          }}
+        >
+          {renderExchanges()}
+        </Select>
+      </FormControl>
+    </>
   );
 };
 
