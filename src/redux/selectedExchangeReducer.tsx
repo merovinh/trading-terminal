@@ -14,13 +14,13 @@ const selectExchangeSlice = createSlice({
             apiKey: values.apiKey,
             secret: values.apiSecret,
             password: values.password,
-            proxy: process.env.REACT_APP_proxy,
+            proxy: (window as any).globalConfig.proxy,
           });
         } else {
           newExchange = new ccxt[`${values.exchange}`]({
             apiKey: values.apiKey,
             secret: values.apiSecret,
-            proxy: process.env.REACT_APP_proxy,
+            proxy: (window as any).globalConfig.proxy,
           });
         }
         state.data = newExchange;
