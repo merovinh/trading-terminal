@@ -16,12 +16,13 @@ import { store } from "../../redux/store";
 import { TerminalContainer } from "./Terminal.style";
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
-  let kucoin: any = new ccxt.kucoin({
-    apiKey: process.env.REACT_APP_apiKey,
-    secret: process.env.REACT_APP_secret,
-    password: process.env.REACT_APP_password,
-    proxy: process.env.REACT_APP_proxy,
-  });
+  // let kucoin: any = new ccxt.kucoin({
+  //   apiKey: process.env.REACT_APP_apiKey,
+  //   secret: process.env.REACT_APP_secret,
+  //   password: process.env.REACT_APP_password,
+  //   proxy: process.env.REACT_APP_proxy,
+  // });
+  let kucoin: any = useSelector((state: any) => state.SelectedExchange.data);
 
   const dispatch = useDispatch();
   let balance = useSelector((state: any) =>
@@ -86,7 +87,8 @@ const Terminal = () => {
   useEffect(() => {
     dispatch(fetchBalance(kucoin));
     dispatch(fetchCoins(kucoin));
-  }, []);
+    dispatch(fetchOrders(kucoin));
+  }, [kucoin]);
 
   const [action, setAction] = useState("buy");
   const toggleAction = (e: any) => {
