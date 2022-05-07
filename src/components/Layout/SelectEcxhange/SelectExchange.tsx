@@ -69,16 +69,17 @@ const SelectExchange = () => {
   return (
     <>
       <FormControl>
-        <InputLabel
+        {/* <InputLabel
           id="demo-simple-select-helper-label"
           sx={{
             backgroundColor: "#fff",
             padding: "0 3px",
             borderRadius: "4px",
+            transform: "translate(10px,5px)",
           }}
         >
           Exchange
-        </InputLabel>
+        </InputLabel> */}
         <Select
           disabled={!exchanges.length}
           labelId="demo-simple-select-helper-label"
@@ -88,12 +89,13 @@ const SelectExchange = () => {
           // onChange={handleSelect}
           sx={{
             m: 0,
-            // padding: "5.5px 14px",
             minWidth: 200,
-            minHeight: "100%",
             backgroundColor: "#fff",
             border: "none",
             borderRadius: "4px 0 0 4px",
+            "& > div": {
+              padding: "5.5px 14px",
+            },
           }}
         >
           {renderExchanges()}
