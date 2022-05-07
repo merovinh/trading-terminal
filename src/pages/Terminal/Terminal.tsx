@@ -61,16 +61,18 @@ const Terminal = () => {
   const handleModeChange = (value: string) => setMode(value);
 
   const handleAmountChange = (value: string | number) => {
-    const stringValue = value.toString();
-    if (stringValue[stringValue.length - 1] === ".") {
-      setAmountValue(value);
-    } else setAmountValue(+value);
+    // const stringValue = value.toString();
+    // if (stringValue[stringValue.length - 1] === ".") {
+    //   setAmountValue(value);
+    // } else
+    setAmountValue(+value);
   };
   const handleLimitChange = (value: string | number) => {
-    const stringValue = value.toString();
-    if (stringValue[stringValue.length - 1] === ".") {
-      setLimitValue(value);
-    } else setLimitValue(+value);
+    // const stringValue = value.toString();
+    // if (stringValue[stringValue.length - 1] === ".") {
+    //   setLimitValue(value);
+    // } else
+    setLimitValue(+value);
   };
 
   const handleClick = (value: string) => {
