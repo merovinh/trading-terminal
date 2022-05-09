@@ -14,7 +14,6 @@ const SelectExchange = () => {
   const dispatch = useDispatch();
   const exchanges = useSelector((state: any) => state.exchanges.data || []);
   const lastExchange: any = window.localStorage.getItem("lastExchange");
-  console.log(lastExchange);
 
   const [selected, setSelected]: any = useState(
     JSON.parse(lastExchange) || { name: "", id: "" }
@@ -25,17 +24,12 @@ const SelectExchange = () => {
       const exchange = data.payload.filter(
         (elem: any) => elem.id === selected.id
       );
-      console.log(exchange[0], data.payload);
       if (exchange[0]) {
         dispatch(exchangeSelected(exchange[0]));
       } else {
         setSelected({ name: "", id: "" });
       }
     });
-  }, []);
-
-  useEffect(() => {
-    console.log(exchanges);
   }, []);
 
   useEffect(
