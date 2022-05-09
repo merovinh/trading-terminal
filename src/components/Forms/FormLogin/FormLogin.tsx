@@ -35,13 +35,13 @@ const FormLogin = () => {
             apiKey: values.apiKey,
             secret: values.apiSecret,
             password: values.password,
-            proxy: process.env.REACT_APP_proxy,
+            proxy: (window as any).globalConfig.proxy,
           });
         } else {
           newExchange = new ccxt[values.exchange]({
             apiKey: values.apiKey,
             secret: values.apiSecret,
-            proxy: process.env.REACT_APP_proxy,
+            proxy: (window as any).globalConfig.proxy,
           });
         }
         const axios = require("axios").default;
@@ -91,11 +91,9 @@ const FormLogin = () => {
           <FormContainer>
             <div>
               <CustomSelect
-                handleChange={(value: any) => {
+                handleChange={(value: string, needPassword: boolean) => {
                   setFieldValue("exchange", value);
-                  value === "kucoin"
-                    ? setFieldValue("needPassword", true)
-                    : setFieldValue("needPassword", false);
+                  setFieldValue("needPassword", needPassword);
                 }}
                 value={values.exchange}
               />

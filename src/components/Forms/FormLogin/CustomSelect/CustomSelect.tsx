@@ -14,13 +14,18 @@ const CustomSelect = ({
   value: any;
 }) => {
   const [exchange, setExchange] = React.useState(value);
+
   React.useEffect(() => {
     setExchange(value);
   }, [value]);
 
-  const handleSelect = (event: SelectChangeEvent) => {
+  const handleSelect = (event: any) => {
     setExchange(event.target.value);
-    handleChange(event.target.value);
+    if (event.currentTarget) {
+      const data = event.currentTarget.dataset;
+
+      handleChange(data.value, data.password === "true");
+    }
   };
 
   const theme = createTheme({
@@ -37,6 +42,23 @@ const CustomSelect = ({
       },
     },
   });
+
+  const renderExchanges = (arr: []) =>
+    arr.map((elem: any, index: number) => (
+      <MenuItem
+        key={index}
+        value={elem.ccxtName}
+        data-password={elem.needPassword}
+        onClick={(event: any) => {
+          handleSelect(event);
+        }}
+      >
+        <StyledItem>
+          {elem.img && <img alt="img" src={elem.img} width={23} height={23} />}{" "}
+          {elem.name}
+        </StyledItem>
+      </MenuItem>
+    ));
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,33 +89,7 @@ const CustomSelect = ({
             gap: "5px",
           }}
         >
-          <MenuItem value={"kucoin"}>
-            <StyledItem>
-              <img
-                alt="img"
-                src={
-                  "https://play-lh.googleusercontent.com/dQ9d57qXuaxTEVwMnS6J4qxVsZLSJYSm-X6zKzV-_w7ClLYh8jSe0J83MhSUgy2kuA"
-                }
-                width={25}
-                height={25}
-              />{" "}
-              Kucoin
-            </StyledItem>
-          </MenuItem>
-          <MenuItem value={"binance"}>
-            <StyledItem>
-              {" "}
-              <img
-                alt="img"
-                src={
-                  "https://public.bnbstatic.com/20190405/eb2349c3-b2f8-4a93-a286-8f86a62ea9d8.png"
-                }
-                width={25}
-                height={25}
-              />{" "}
-              Binance
-            </StyledItem>
-          </MenuItem>
+          {renderExchanges((window as any).globalConfig.exchanges)}
         </Select>
       </FormControl>
     </ThemeProvider>
