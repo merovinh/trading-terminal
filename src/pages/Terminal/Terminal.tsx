@@ -16,12 +16,6 @@ import { store } from "../../redux/store";
 import { TerminalContainer } from "./Terminal.style";
 const Terminal = () => {
   const ccxt = (window as any).ccxt;
-  // let kucoin: any = new ccxt.kucoin({
-  //   apiKey: process.env.REACT_APP_apiKey,
-  //   secret: process.env.REACT_APP_secret,
-  //   password: process.env.REACT_APP_password,
-  //   proxy: process.env.REACT_APP_proxy,
-  // });
   let kucoin: any = useSelector((state: any) => state.SelectedExchange.data);
 
   const dispatch = useDispatch();
@@ -61,17 +55,9 @@ const Terminal = () => {
   const handleModeChange = (value: string) => setMode(value);
 
   const handleAmountChange = (value: string | number) => {
-    // const stringValue = value.toString();
-    // if (stringValue[stringValue.length - 1] === ".") {
-    //   setAmountValue(value);
-    // } else
     setAmountValue(+value);
   };
   const handleLimitChange = (value: string | number) => {
-    // const stringValue = value.toString();
-    // if (stringValue[stringValue.length - 1] === ".") {
-    //   setLimitValue(value);
-    // } else
     setLimitValue(+value);
   };
 

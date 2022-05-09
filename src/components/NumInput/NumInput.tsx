@@ -31,14 +31,12 @@ const NumInput = ({
     if (action === "+") {
       if (localValue === "") setLocalValue(0.1);
       else if (isNaN(+localValue)) return;
-      else if (!isNaN(+localValue))
-        setLocalValue((+localValue + 0.1).toFixed(accuracy));
+      else if (!isNaN(+localValue)) setLocalValue(+localValue + 0.1);
     }
     if (action === "-") {
       if (localValue === "") setLocalValue(0.1);
       else if (isNaN(+localValue)) return;
-      else if (!isNaN(+localValue))
-        setLocalValue((+localValue - 0.1).toFixed(accuracy));
+      else if (!isNaN(+localValue)) setLocalValue(+localValue - 0.1);
     }
     console.log("local:", localValue);
     console.log("hook:", hookValue);
@@ -51,10 +49,6 @@ const NumInput = ({
   }, [localValue]);
 
   useEffect(() => {
-    // const isChanged: boolean = +hookValue !== +localValue;
-    // let result: number = isChanged ? +localValue : +hookValue;
-    // console.log("changed:", isChanged, "result:", result, "hook:", hookValue);
-    // // setLocalValue(result);
     setLocalValue(hookValue);
   }, [hookValue]);
 
@@ -72,13 +66,6 @@ const NumInput = ({
         value={disabled ? "" : localValue}
         onChange={(e) => {
           let subValue: any = e.target.value;
-          // if (isNaN(+subValue)) {
-          //   handleValue(+hookValue.toFixed(accuracy));
-          // } else if (subValue[subValue.length - 1] === ".") {
-          //   handleValue(subValue);
-          // } else {
-          //   handleValue((+subValue).toFixed(accuracy));
-          // }
           setLocalValue(subValue);
         }}
       />
@@ -99,6 +86,3 @@ const NumInput = ({
   );
 };
 export default NumInput;
-
-//what we are buying / for what we are buying
-//what we are selling / for what we are selling
