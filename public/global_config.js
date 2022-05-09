@@ -1,5 +1,5 @@
 window.globalConfig = {
-    proxy: "https://cors-proxy.crawler.link/",   //insert proxy link for cors
+    proxy: "",   //insert proxy link for cors
     exchanges: [    // insert new obj with exchange to have opportunity to create new valid exchange
         {
             ccxtName: "binance",
