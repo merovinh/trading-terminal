@@ -35,6 +35,7 @@ export const CustomInput = ({
         sx={{
           backgroundColor: "#f2f2f2",
           borderRadius: "3px",
+          width: "100%",
         }}
         onChange={handleType}
         value={value}
