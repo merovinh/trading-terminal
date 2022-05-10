@@ -35,6 +35,10 @@ export const StyledLi = styled.li`
   font-weight: 400;
   color: #fff;
   background-color: #2e2e2e;
+
+  p {
+    font-weight: lighter;
+  }
   &:nth-of-type(2n) {
     background-color: #232c2d;
   }
