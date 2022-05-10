@@ -44,50 +44,6 @@ app.on('activate', () => {
 })
 
 const fs = require('fs');
-// try { fs.writeFileSync('myfile.txt', 'the text to write in the file', 'utf-8'); }
-// catch (e) { alert('Failed to save the file !'); }
-
-// const http = require('http');
-
-// const server = http.listen(3000, 'localhost', () => {
-//     console.log("ConneCted");
-// })
-
-// const net = require("net");
-
-// Create a simple server
-// var server = net.createServer(function (conn) {
-//     console.log("Server: Client connected");
-
-//     // If connection is closed
-//     conn.on("end", function () {
-//         console.log('Server: Client disconnected');
-//         // Close the server
-//         server.close();
-//         // End the process
-//         process.exit(0);
-//     });
-
-//     // Handle data from client
-//     conn.on("data", function (data) {
-//         data = JSON.parse(data);
-//         console.log("Response from client: %s", data.response);
-//     });
-
-//     // Let's response with a hello message
-//     conn.write(
-//         JSON.stringify(
-//             { response: "Hey there client!" }
-//         )
-//     );
-// });
-
-// // Listen for connections
-// server.listen(3000, "localhost", function () {
-//     console.log("Server: Listening");
-// });
-
-
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
@@ -108,14 +64,7 @@ const port = 9191;
 serv.use(bodyParser.urlencoded({ extended: false }));
 serv.use(bodyParser.json());
 
-// const requestListener = function (req, res) {
-//     res.setHeader("My-Response", req);
 
-//     // res.json({ a: 1 });
-
-//     res.writeHead(200);
-//     // res.end(`{"message": "This is a JSON response"}`);
-// };
 
 serv.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
@@ -157,12 +106,36 @@ serv.post("/add", function (req, res) {
     res.json(exchanges);
 });
 
+serv.post("/deleteExchange", function (req, res) {
+    // {id:wewgr235235}
+    let exchanges = [];
+    if (fs.existsSync(pathToJSON)) {
+        exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
+
+        const resultExchanges = exchanges.filter(el => el.id !== req.body.id);
+
+        try { fs.writeFileSync(pathToJSON, JSON.stringify(resultExchanges, null, 4), 'utf-8'); }
+        catch (e) { console.log('Failed to save the file !'); }
+    }
+    res.send(`Exchange deleted ${req.body.id}`);
+});
+
+serv.post("/editExchange", function (req, res) {
+    let exchanges = [];
+    if (fs.existsSync(pathToJSON)) {
+        exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
+
+        const editExchange = exchanges.filter((el) => el.id === req.body.id)[0];
 
 
+        try { fs.writeFileSync(pathToJSON, JSON.stringify(resultExchanges, null, 4), 'utf-8'); }
+        catch (e) { console.log('Failed to save the file !'); }
+    }
+})
 
 
 const server = http.createServer(serv);
 server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port} ABRA KADABRA`);
+    console.log(`Server is running on http://${host}:${port}`);
 
 });
