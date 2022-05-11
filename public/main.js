@@ -117,7 +117,7 @@ serv.post("/deleteExchange", function (req, res) {
         try { fs.writeFileSync(pathToJSON, JSON.stringify(resultExchanges, null, 4), 'utf-8'); }
         catch (e) { console.log('Failed to save the file !'); }
     }
-    res.send(`Exchange deleted ${req.body.id}`);
+    res.send(`Exchange deleted`);
 });
 
 serv.post("/editExchange", function (req, res) {
@@ -126,10 +126,14 @@ serv.post("/editExchange", function (req, res) {
         exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
 
         const editExchange = exchanges.filter((el) => el.id === req.body.id)[0];
+        editExchange.name = req.body.name;
+        editExchange.apiKey = req.body.apikey;
+        editExchange.secret = req.body.secret;
+        if (editExchange.password) editExchange.password = req.body.password;
 
-
-        try { fs.writeFileSync(pathToJSON, JSON.stringify(resultExchanges, null, 4), 'utf-8'); }
+        try { fs.writeFileSync(pathToJSON, JSON.stringify(exchanges, null, 4), 'utf-8'); res.send('Exchange saved, Success!') }
         catch (e) { console.log('Failed to save the file !'); }
+
     }
 })
 
