@@ -7,6 +7,8 @@ import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { CustomInput } from "../../components/CustomInput";
 import { fetchExchanges } from "../../redux/exchangesReducer";
+import { StyledBtn, DeleteBtn } from "./Exchanges.styles";
+import { toast } from "react-toastify";
 
 const Exchanges = () => {
   const exchanges: any = useSelector((state: any) => state.exchanges.data);
@@ -39,20 +41,39 @@ const Exchanges = () => {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: 700,
-    bgcolor: "background.paper",
+    bgcolor: "#212121",
     border: "2px solid #000",
     boxShadow: 24,
-    p: 4,
+    borderRadius: "18px 18px 5px 5px",
+    padding: "40px 40px 100px",
   };
 
+  const axios = require("axios");
+
   const handleSubmit = () => {
-    const axios = require("axios");
-    axios.post("/", editObj).then((data: any) => dispatch(fetchExchanges()));
+    console.log(editObj);
+    setOpen(false);
+    axios
+      .post("http://localhost:9191/editExchange", editObj)
+      .then((data: any) => {
+        dispatch(fetchExchanges());
+        toast.success(data.data);
+      });
+  };
+
+  const handleDelete = () => {
+    axios
+      .post("http://localhost:9191/deleteExchange", { id: editObj.id })
+      .then((data: any) => {
+        dispatch(fetchExchanges());
+        setOpen(false);
+        toast.success(data.data);
+      });
   };
 
   return (
     <>
-      <ExchangesList exchangesArray={exchanges} editFunction={handleEdit} />;
+      <ExchangesList exchangesArray={exchanges} editFunction={handleEdit} />
       <Modal
         open={open}
         onClose={handleClose}
@@ -91,8 +112,9 @@ const Exchanges = () => {
             />
           )}
           <div style={{ width: "fit-content", margin: "30px auto 0" }}>
-            <button>Submit</button>
+            <StyledBtn onClick={handleSubmit}>Submit</StyledBtn>
           </div>
+          <DeleteBtn onClick={handleDelete}>Delete</DeleteBtn>
         </Box>
       </Modal>
     </>
