@@ -1,23 +1,20 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchBalance } from "../../../redux/balanceReducer";
 import { fetchCoins } from "../../../redux/coinsReducer";
+import { fetchExchanges } from "../../../redux/exchangesReducer";
 import { fetchOrders } from "../../../redux/ordersReducer";
 import { Reload } from "./ReloadBtn.styles";
 
 const ReloadBtn = () => {
   const ccxt = (window as any).ccxt;
-  let kucoin: any = new ccxt.kucoin({
-    apiKey: process.env.REACT_APP_apiKey,
-    secret: process.env.REACT_APP_secret,
-    password: process.env.REACT_APP_password,
-    proxy: process.env.REACT_APP_proxy,
-  });
+  let kucoin: any = useSelector((state: any) => state.SelectedExchange.data);
 
   const dispatch = useDispatch();
   const handleReload = () => {
     dispatch(fetchCoins(kucoin));
     dispatch(fetchBalance(kucoin));
     dispatch(fetchOrders(kucoin));
+    dispatch(fetchExchanges());
   };
 
   return <Reload onClick={handleReload}>↻</Reload>;
