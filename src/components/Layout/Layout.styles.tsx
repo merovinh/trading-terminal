@@ -14,26 +14,20 @@ export const BtnLink = styled.span`
   a {
     height: 100%;
     width: 100%;
-    padding: 0 15px;
+    padding: 0 30px;
     display: flex;
     align-items: center;
     color: #fff;
-    transition: color 250ms ease;
-    transition: text-shadow 250ms ease;
     &:hover {
-      color: #c8f7f5;
-      text-shadow: 1px 2px 2px black;
+      color: #000;
+      background-color: #fff;
+      transform: scale(1.1);
     }
-  }
-  transition: all 200ms ease;
-  &:hover {
-    transform: scale(1.2);
   }
 `;
 export const Navigation = styled.nav`
   width: fit-content;
   display: flex;
-  gap: 40px;
   background-color: #303030;
   border-radius: 5px;
   justify-content: space-between;

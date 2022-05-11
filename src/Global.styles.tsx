@@ -19,6 +19,7 @@ export const GlobalStyles = css`
     margin: 0;
     font-family: "Lexend", "Poppins", sans-serif;
     font-weight: 300;
+    color: #fff;
   }
   button {
     font-weight: 300;
