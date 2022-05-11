@@ -11,7 +11,8 @@ export const StyledLi = styled.li`
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 140px;
+    width: 420px;
+    overflow-wrap: anywhere;
     padding: 10px 15px;
     border: 2px solid black;
     border-radius: 8px;
@@ -43,4 +44,11 @@ export const StyledUl = styled.ul`
   flex-direction: column;
   gap: 20px;
   padding: 0 10px;
+`;
+
+export const StyledBtn = styled.button`
+  padding: 5px 15px;
+  font-size: 23px;
+  font-weight: 500;
+  background-color: #454545;
 `;
