@@ -9,9 +9,14 @@ import { CustomInput } from "../../components/CustomInput";
 import { fetchExchanges } from "../../redux/exchangesReducer";
 import { StyledBtn, DeleteBtn } from "./Exchanges.styles";
 import { toast } from "react-toastify";
+import {
+  exchangeSelected,
+  resetSelectedExchange,
+} from "../../redux/selectedExchangeReducer";
 
 const Exchanges = () => {
   const exchanges: any = useSelector((state: any) => state.exchanges.data);
+  const selectedId = useSelector((state: any) => state.SelectedExchange.id);
   const [open, setOpen]: [boolean, any] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -52,13 +57,48 @@ const Exchanges = () => {
 
   const handleSubmit = () => {
     console.log(editObj);
-    setOpen(false);
-    axios
-      .post("http://localhost:9191/editExchange", editObj)
-      .then((data: any) => {
-        dispatch(fetchExchanges());
-        toast.success(data.data);
+
+    const editingExchange = exchanges.filter(
+      (el: any) => el.id === editObj.id
+    )[0];
+
+    console.log(editingExchange);
+    const validateExchange = {
+      ...editingExchange,
+      ...editObj,
+      apiKey: editObj.apikey,
+    };
+    console.log("validate", validateExchange);
+    let newExchange: any;
+    const ccxt = (window as any).ccxt;
+    if (validateExchange.needPassword) {
+      newExchange = new ccxt[`${validateExchange.exchange}`]({
+        apiKey: validateExchange.apiKey,
+        secret: validateExchange.apiSecret,
+        password: validateExchange.password,
+        proxy: (window as any).globalConfig.proxy,
       });
+    } else {
+      newExchange = new ccxt[`${validateExchange.exchange}`]({
+        apiKey: validateExchange.apiKey,
+        secret: validateExchange.apiSecret,
+        proxy: (window as any).globalConfig.proxy,
+      });
+    }
+    // newExchange.setSandboxMode(true); //==============================
+    newExchange
+      .fetchBalance()
+      .then((data: any) => {
+        axios
+          .post("http://localhost:9191/editExchange", editObj)
+          .then((data: any) => {
+            dispatch(fetchExchanges());
+            toast.success(data.data);
+          });
+        setOpen(false);
+      })
+      .then(dispatch(exchangeSelected(newExchange)))
+      .catch((err: any) => toast.error(err.message));
   };
 
   const handleDelete = () => {
@@ -68,6 +108,13 @@ const Exchanges = () => {
         dispatch(fetchExchanges());
         setOpen(false);
         toast.success(data.data);
+      })
+      .then(() => {
+        if (selectedId === editObj.id) {
+          console.log("work");
+          dispatch(resetSelectedExchange());
+        }
+        // console.log("Notwork");
       });
   };
 
