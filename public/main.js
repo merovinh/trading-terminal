@@ -1,5 +1,6 @@
 const { app, BrowserWindow } = require('electron');
-
+const path = require('path');
+const isDev = require("electron-is-dev");
 
 
 function createWindow() {
@@ -25,7 +26,7 @@ function createWindow() {
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 let mainWindow = null
-
+// app.commandLine.appendSwitch("--disable-ipc-flooding-protection");
 app.whenReady(
 ).then(() => {
     const { screen } = require('electron')
@@ -37,8 +38,11 @@ app.whenReady(
             enableRemoteModule: true
         }
     });
-    mainWindow.removeMenu()
-    mainWindow.loadURL('http://localhost:3000');
+    // mainWindow.removeMenu()
+    mainWindow.loadURL(isDev
+        ? 'http://localhost:3000'
+        : `${path.join(__dirname, 'index.html')}`);
+
     // createWindow()
 })
 
