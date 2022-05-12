@@ -18,12 +18,29 @@ function createWindow() {
 
     // Open the DevTools.
     win.webContents.openDevTools();
+    win.setMenu(null)
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindow)
+let mainWindow = null
+
+app.whenReady(
+).then(() => {
+    const { screen } = require('electron')
+    const primaryDisplay = screen.getPrimaryDisplay()
+    const { width, height } = primaryDisplay.workAreaSize
+    mainWindow = new BrowserWindow({
+        width, height, minHeight: height, minWidth: 730, webPreferences: {
+            nodeIntegration: true,
+            enableRemoteModule: true
+        }
+    });
+    mainWindow.removeMenu()
+    mainWindow.loadURL('http://localhost:3000');
+    // createWindow()
+})
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
