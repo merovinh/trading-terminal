@@ -33,7 +33,6 @@ const Exchanges = () => {
   const handleEdit = (obj: any = {}) => {
     handleOpen();
     setEditObj(obj);
-    console.log(obj);
   };
 
   const handleObjChange = (value: string, objName: string) => {
@@ -56,19 +55,15 @@ const Exchanges = () => {
   const axios = require("axios");
 
   const handleSubmit = () => {
-    console.log(editObj);
-
     const editingExchange = exchanges.filter(
       (el: any) => el.id === editObj.id
     )[0];
 
-    console.log(editingExchange);
     const validateExchange = {
       ...editingExchange,
       ...editObj,
       apiKey: editObj.apikey,
     };
-    console.log("validate", validateExchange);
     let newExchange: any;
     const ccxt = (window as any).ccxt;
     if (validateExchange.needPassword) {
@@ -111,10 +106,8 @@ const Exchanges = () => {
       })
       .then(() => {
         if (selectedId === editObj.id) {
-          console.log("work");
           dispatch(resetSelectedExchange());
         }
-        // console.log("Notwork");
       });
   };
 

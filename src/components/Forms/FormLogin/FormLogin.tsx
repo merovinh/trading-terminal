@@ -26,7 +26,6 @@ const FormLogin = () => {
       }}
       validationSchema={schema}
       onSubmit={async (values: any, { resetForm }) => {
-        console.log(values);
         const ccxt = (window as any).ccxt;
 
         let newExchange: any;

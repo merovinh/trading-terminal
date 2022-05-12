@@ -10,11 +10,9 @@ const Balances = () => {
 
   useEffect(() => {
     dispatch(fetchBalance(exchange));
-    console.log("1: ", balances);
   }, []);
   useEffect(() => {
     dispatch(fetchBalance(exchange));
-    console.log(balances);
   }, [exchange]);
 
   return (

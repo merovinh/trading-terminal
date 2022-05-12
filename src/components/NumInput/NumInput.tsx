@@ -38,14 +38,11 @@ const NumInput = ({
       else if (isNaN(+localValue)) return;
       else if (!isNaN(+localValue)) setLocalValue(+localValue - 0.1);
     }
-    console.log("local:", localValue);
-    console.log("hook:", hookValue);
   };
 
   useEffect(() => {
     if (isNaN(+localValue)) handleValue(+hookValue.toFixed(accuracy));
     else if (!isNaN(+localValue)) handleValue((+localValue).toFixed(accuracy));
-    console.log(`sub: ${localValue} local: ${localValue} hook: ${hookValue} `);
   }, [localValue]);
 
   useEffect(() => {
