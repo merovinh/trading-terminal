@@ -111,7 +111,7 @@ const Terminal = () => {
     isNotValidFormAction(mode, amountValue, limitValue, setValid);
     if (!selectedCoin) return toast.error("Please select coin!");
     if (isString(valid)) return toast.error(valid);
-    kucoin.setSandboxMode(true); //=========================
+    // kucoin.setSandboxMode(true); //=========================
     const actionCoin: string = `${selectedCoin.amount}/${selectedCoin.limit}`;
     const limitUpMode = mode === "limit" ? limitValue : undefined;
 
@@ -127,7 +127,7 @@ const Terminal = () => {
   };
 
   const cancelOrder = (orderId: string, symbol: string) => {
-    kucoin.setSandboxMode(true); //=========================
+    // kucoin.setSandboxMode(true); //=========================
     kucoin.cancelOrder(orderId, symbol).then((res: any) => {
       dispatch(fetchBalance(kucoin));
       dispatch(fetchOrders(kucoin));

@@ -4,7 +4,7 @@ export const fetchBalance: any = createAsyncThunk<any>(
   "balance/fetchBalance",
   async (exchange: any, { rejectWithValue }) => {
     try {
-      exchange.setSandboxMode(true); //=============
+      // exchange.setSandboxMode(true); //=============
       const response = await exchange.fetchBalance();
       return response;
     } catch (error: any) {
