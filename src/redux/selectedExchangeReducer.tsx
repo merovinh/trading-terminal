@@ -24,12 +24,20 @@ const selectExchangeSlice = createSlice({
           });
         }
         state.data = newExchange;
+        state.name = values.name;
+        state.id = values.id;
       } catch (err) {
         console.log(err);
       }
     },
+    resetSelectedExchange: (state: any) => {
+      state.data = {};
+      state.name = "";
+      state.id = "";
+    },
   },
 });
 
-export const { exchangeSelected } = selectExchangeSlice.actions;
+export const { exchangeSelected, resetSelectedExchange } =
+  selectExchangeSlice.actions;
 export const selectExchangeReducer = selectExchangeSlice.reducer;
