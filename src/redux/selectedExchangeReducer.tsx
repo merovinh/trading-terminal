@@ -8,7 +8,7 @@ const selectExchangeSlice = createSlice({
             try {
                 const values = action.payload;
                 let newExchange: any;
-                const ccxt = (window as any).ccxt;
+                const ccxt: any = (window as any).ccxt;
                 if (values.needPassword) {
                     newExchange = new ccxt[`${values.exchange}`]({
                         apiKey: values.apiKey,

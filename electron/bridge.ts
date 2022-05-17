@@ -26,12 +26,12 @@ export const api = {
     }
   },
 
-  deleteExchange:(exchangeId:string)=>{
+  deleteExchange:(exchangeId:{id:string})=>{
     let exchanges = [];
     if (fs.existsSync(pathToJSON)) {
         exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
 
-        const resultExchanges = exchanges.filter((el:any) => el.id !== exchangeId);
+        const resultExchanges = exchanges.filter((el:any) => el.id !== exchangeId.id);
 
         try { fs.writeFileSync(pathToJSON, JSON.stringify(resultExchanges, null, 4), 'utf-8'); }
         catch (e) { console.log('Failed to save the file !'); }

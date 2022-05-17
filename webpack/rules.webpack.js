@@ -32,6 +32,14 @@ module.exports = [
     options: {
       name: '[path][name].[ext]',
     },
+  },
+  {
+    test: /\.css$/,
+    loader: 'style-loader'
+  },
+  {
+    test: /\.css$/,
+    loader: 'css-loader'
   }
 
 ]
