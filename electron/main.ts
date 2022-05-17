@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain,screen } from 'electron'
 
 let mainWindow: BrowserWindow | null
 
@@ -11,17 +11,23 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string
 //     : app.getAppPath()
 
 function createWindow () {
+  const primaryDisplay = screen.getPrimaryDisplay()
+  const { width, height } = primaryDisplay.workAreaSize
   mainWindow = new BrowserWindow({
     // icon: path.join(assetsPath, 'assets', 'icon.png'),
-    width: 1100,
-    height: 700,
-    backgroundColor: '#191622',
+    width: width,
+    height: height,
+    minWidth:730,
+    minHeight:height,
+    backgroundColor: '#2e2e2e',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY
     }
   })
+
+  mainWindow.removeMenu();
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
