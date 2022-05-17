@@ -1,12 +1,15 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import { globalConfig } from '../global_config';
 import fs from 'fs';
-const exportGlobalConfig= JSON.stringify(globalConfig);
+
+let exportGlobalConfig;
+if (fs.existsSync("global_config.json")){
+  exportGlobalConfig = JSON.parse(fs.readFileSync("global_config.json", 'utf-8'))
+}
 
 const pathToJSON = "exchanges_API_Info.json";
 
 export const api = {
-  globalConfig: JSON.parse(exportGlobalConfig),
+  globalConfig: exportGlobalConfig,
 
   editExchange:(exchange:any)=>{
     let exchanges = [];

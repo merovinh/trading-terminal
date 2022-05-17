@@ -2,9 +2,9 @@ import { app, BrowserWindow, ipcMain,screen } from 'electron'
 import { globalConfig } from './global_config';
 import fs from 'fs';
 
-const exportString = `export const globalConfig = ${JSON.stringify(globalConfig, null, 4)}`
-if (!fs.existsSync("global_config.js")){
-  fs.writeFileSync("global_config.js", exportString)
+
+if (!fs.existsSync("global_config.json")){
+  fs.writeFileSync("global_config.json", JSON.stringify(globalConfig, null, 4),'utf-8')
 }
 
 
@@ -35,7 +35,7 @@ function createWindow () {
     }
   })
 
-  mainWindow.removeMenu();
+  // mainWindow.removeMenu();
 
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY)
 
