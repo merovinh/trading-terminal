@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ExchangesList } from '../../components/ExchangesList';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CustomInput } from '../../components/CustomInput';
 import { fetchExchanges } from '../../redux/exchangesReducer';
 import { StyledBtn, DeleteBtn } from './Exchanges.styles';
@@ -20,6 +20,10 @@ const Exchanges = () => {
     const handleClose = () => setOpen(false);
 
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchExchanges());
+    }, []);
 
     const [editObj, setEditObj]: any = useState({
         name: '',
@@ -85,8 +89,8 @@ const Exchanges = () => {
                 toast.success('Exchange changed!');
             })
             .then(dispatch(exchangeSelected(newExchange)))
-            .then(dispatch(fetchExchanges()))
             .catch((err: any) => toast.error(err.message));
+        dispatch(fetchExchanges());
     };
 
     const handleDelete = () => {

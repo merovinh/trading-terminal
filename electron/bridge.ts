@@ -11,7 +11,7 @@ const pathToJSON = "exchanges_API_Info.json";
 export const api = {
   globalConfig: exportGlobalConfig,
 
-  editExchange:(exchange:any)=>{
+  editExchange:async (exchange:any)=>{
     let exchanges = [];
     if (fs.existsSync(pathToJSON)) {
         exchanges = JSON.parse(fs.readFileSync(pathToJSON, 'utf-8'));
