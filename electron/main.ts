@@ -28,6 +28,7 @@ function createWindow () {
     minWidth:730,
     minHeight:height,
     backgroundColor: '#2e2e2e',
+    title:"Trading terminal",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

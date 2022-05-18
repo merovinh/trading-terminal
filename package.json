@@ -73,7 +73,7 @@
     "forge": {
       "packagerConfig": {
         "name": "Trading terminal",
-        "executableName": "trading-terminal",
+        "executableName": "Trading terminal",
         "icon": "assets/icon",
         "extraResource": [
           "assets"
