@@ -72,8 +72,8 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "name": "Electron starter",
-        "executableName": "electron-starter",
+        "name": "Trading terminal",
+        "executableName": "trading-terminal",
         "icon": "assets/icon",
         "extraResource": [
           "assets"
